@@ -8,7 +8,7 @@ Group project: "Laser Tag System for CSCE 3513"
 [ TODO ]  
 
 ## Team Members
-Bertrand, Blake, Bryce, Cameron, Darian, Darren, Gianfranco, Jameson, Landry
+Blake, Bryce, Cameron, Darian, Darren, Gianfranco, Jameson
 
 ## Next Steps
 [ TODO ]
