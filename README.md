@@ -10,5 +10,7 @@ Group project: "Laser Tag System for CSCE 3513"
 ## Team Members
 Blake, Bryce, Cameron, Darian, Darren, Gianfranco, Jameson
 
+TODO: "In the readme have a table cross referencing your github names and real names."
+
 ## Next Steps
-[ TODO ]
+See Trello
