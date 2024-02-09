@@ -7,8 +7,9 @@ Group project: "Laser Tag System for CSCE 3513"
 ## Detailed Instructions
 "Include a readme file in your github repository that has instructions on how to run your project."
 
-First, _________ \n
-```[command_goes_here]```\n
+First, run...
+```[command_goes_here]```
+
 [ TODO ]  
 
 ## Team Members
