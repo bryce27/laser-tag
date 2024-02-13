@@ -14,7 +14,7 @@ bufferSize = 1024
 udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
 #send starter message to server from client
-udpClientSocket.sendto(bytesToSend, serverAddress)
+udpClientSocket.sendto(bytesToSend, serverAddressPort)
 
 #receive message back from server
 serverMsg = udpClientSocket.recvfrom(bufferSize)
