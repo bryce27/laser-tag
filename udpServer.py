@@ -9,15 +9,14 @@ def onReceiveData(playerOneId, playerTwoId):
 def isPlayerOnOwnTeam(playerOneId, playerTwoId):
     pass
     return False
+
+def teamScored(team):
+    pass
     
 codes = {
-    53: onReceiveData,
-    43: isPlayerOnOwnTeam
+    53: teamScored('red'),
+    43: teamScored('green'),
 }
-
-# TODO:
-# if player is not on own team, give them 100 points
-# also put B next to their name
 
 #create IP & Port
 Server_IP = "127.0.0.1"
