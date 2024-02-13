@@ -31,8 +31,28 @@ def clear_table():
 
 
 from flask import Flask, render_template, request, json, jsonify, send_file
+import subprocess
+import udp_client as uc
+
 
 app = Flask(__name__)
+
+@app.route('/play_photon/submit', methods=['POST'])
+@app.route('/play_photon/start_game', methods=['POST'])
+def start_game():
+    data = request.json
+    transmitter_id = data.get('transmitter_id')
+    hit_id = data.get('hit_id')
+
+    # Call the UDP client to send the data
+    uc.onPlayerHit(transmitter_id, hit_id)
+
+
+
+    return jsonify({"message": "Game started successfully"})
+
+
+
 
 @app.route('/')
 def display_image():
