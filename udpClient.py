@@ -1,5 +1,9 @@
 import socket
 
+def onPlayerHit():
+    # send equipment id of player who got hit (single int)
+    pass
+
 clientMsg = "hi"
 start = "202"
 end = "221"

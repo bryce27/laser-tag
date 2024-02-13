@@ -1,5 +1,24 @@
 import socket
 
+# Helper functions here
+def onReceiveData(playerOneId, playerTwoId):
+    # 2 integers: equipment id of player transmitting : equipment id of player hit
+    pass
+    return 1 # equipment id (integer) of player that was hit
+
+def isPlayerOnOwnTeam(playerOneId, playerTwoId):
+    pass
+    return False
+    
+codes = {
+    53: onReceiveData,
+    43: isPlayerOnOwnTeam
+}
+
+# TODO:
+# if player is not on own team, give them 100 points
+# also put B next to their name
+
 #create IP & Port
 Server_IP = "127.0.0.1"
 Server_Port = 7501
@@ -23,7 +42,6 @@ while (True):
     clientMsg = "Client msg:{}".format(message)
     clientIP = "IP:{}".format(address)
     
-
     print(clientMsg)
     print(clientIP)
 
