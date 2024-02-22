@@ -15,7 +15,15 @@ First, run...
 ## Team Members
 Blake, Bryce, Cameron, Darian, Darren, Gianfranco, Jameson
 
-TODO: "In the readme have a table cross referencing your github names and real names."
+Real Names and Github Name Reference Guide
+Blake - Blake-wood
+Bryce - bryce27
+Cameron - cameronevans26
+Darian - williamsdarian
+Darren - darrenb314
+Gianfranco - ?
+Jameson - JamesonThomas-edu
+
 
 ## Next Steps
 See Trello
