@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='play_photon.css') }}">
+    <script src="{{ url_for('static', filename='play_photon.js') }}"></script>
+    <title>Set Up Players</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Set Up Players</h1>
+
+       
+
+        <!-- Blue Team Input Boxes -->
+        <div id="player-container" class="team-container">
+            <h2>Player Name</h2>
+            <input class="player-input" type="text" placeholder="Enter player name">
+            <input class="player-input" type="text" placeholder="Enter player name">
+            <input class="player-input" type="text" placeholder="Enter player name">
+            <input class="player-input" type="text" placeholder="Enter player name">
+            <input class="player-input" type="text" placeholder="Enter player name">
+            <input class="player-input" type="text" placeholder="Enter player name">
+            <input class="player-input" type="text" placeholder="Enter player name">
+            <input class="player-input" type="text" placeholder="Enter player name">
+            <input class="player-input" type="text" placeholder="Enter player name">
+        </div>
+
+        <!-- Red Team Input Boxes -->
+        <div id = "equipment-container" class="team-container">
+            <h2>Equipment ID</h2>
+            <input class="player-input" type="text" placeholder="Enter Equipment ID">
+            <input class="player-input" type="text" placeholder="Enter Equipment ID">
+            <input class="player-input" type="text" placeholder="Enter Equipment ID">
+            <input class="player-input" type="text" placeholder="Enter Equipment ID">
+            <input class="player-input" type="text" placeholder="Enter Equipment ID">
+            <input class="player-input" type="text" placeholder="Enter Equipment ID">
+            <input class="player-input" type="text" placeholder="Enter Equipment ID">
+            <input class="player-input" type="text" placeholder="Enter Equipment ID">
+            <input class="player-input" type="text" placeholder="Enter Equipment ID">
+        </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="button-container">
+        <!-- Save Button -->
+        <button onclick="start_game()" id="save-button">Start Game</button>
+    </div>
+</body>
+</html>
