@@ -52,7 +52,7 @@ Welcome to the Laser Tag Game for CSCE 3513! This game is built on Flask and uti
 | Cameron   | cameronevans26     |
 | Darian    | williamsdarian     |
 | Darren    | darrenb314         |
-| Gianfranco| gb016  |
+| Gianfranco| gb016              |
 | Jameson   | JamesonThomas-edu  |
 
 Enjoy playing Laser Tag!
