@@ -15,30 +15,41 @@ def generateID(length=15):
     characters = string.ascii_letters + string.digits  # All letters (both cases) and numbers
     return ''.join(random.choice(characters) for _ in range(length))
 
-def insert_player(playerName, id):
-    randomID  = generateID()
+def insert_player(tableName, playerName):
     if playerName is not None:
-        supabase.table("CurrentGameTable").insert({"id": randomID, "name": playerName, "equipment_id": int(id)}).execute()
-
-
+        randomID = generateID()
+        supabase.table(tableName).insert({"id": randomID, "name": playerName}).execute()
 
 
 
 def clear_table():
-    supabase.table("CurrentGameTable").delete().neq('name', '0').execute()
+    supabase.table("Blue Team").delete().neq('id', 2).execute()
+    supabase.table("Red Team").delete().neq('id', 1).execute()
+
+
 
 
 
 from flask import Flask, render_template, request, json, jsonify, send_file
+import subprocess
 import udp_client as uc
-
 
 
 app = Flask(__name__)
 
+@app.route('/play_photon/submit', methods=['POST'])
+@app.route('/play_photon/start_game', methods=['POST'])
+def start_game():
+    data = request.json
+    transmitter_id = data.get('transmitter_id')
+    hit_id = data.get('hit_id')
+
+    # Call the UDP client to send the data
+    uc.onPlayerHit(transmitter_id, hit_id)
 
 
 
+    return jsonify({"message": "Game started successfully"})
 
 
 
@@ -64,44 +75,44 @@ def get_image():
     return send_file('static/logo.jpg', mimetype='image/jpg')
 
 
-
 @app.route('/play_photon/start_game', methods=['POST'])
 def save_players():
     try:
-        clear_table()
         # Get the player names from the request data
         data = request.get_json()
-        playerNames = data.get('Player_Names', [])
-        equipmentIds = data.get('Equipment_Ids', [])
+        blue_players = data.get('bluePlayers', [])
+        red_players = data.get('redPlayers', [])
 
-        i = 0  # Initialize i outside the loop
-        for name in playerNames:
-            if name is not None:
-                supabase.table("playerNameTable").insert({"name": name}).execute()
-                insert_player(name, equipmentIds[i])
-                uc.send_udp_message(name +  " Equipment: " + equipmentIds[i])
-            i += 1  # Increment i within the loop
-        
+        clear_table()
+
+        for name in blue_players:
+            insert_player("Blue Team", name)
+
+        for name in red_players:
+            insert_player("Red Team", name)            
+
+
+        # Process the player names as needed
+        print("Blue Team Players:", blue_players)
+        print("Red Team Players:", red_players)
+
+        response = supabase.table('Blue Team').select("*").execute()
+        print(response)
 
         # Optionally, you can send a response back to the client
         return jsonify({'message': 'Players saved successfully'}), 200
     except Exception as e:
         print("Error:", e)
         return jsonify({'error': 'An error occurred'}), 500
-    
-   
 
 @app.route('/get_data')
 def get_red_data():
-    # Execute a select query on the Supabase table corresponding to the 'team'
-    response = supabase.table("CurrentGameTable").select('*').execute()
-    print("response: ")
+    team= request.args.get('team')
+    response = supabase.table(team).select('*').execute()
     print(response)
-    # Convert the response data (model_dump_json) to a Python dictionary
     players = response.model_dump_json()
-    # Return the players data as JSON
+    print(type(players))
     return json.loads(players)
-
 
 
 
