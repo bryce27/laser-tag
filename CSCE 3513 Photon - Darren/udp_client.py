@@ -18,6 +18,22 @@ def onPlayerHit(transmitting_id, hit_id):
 
     # Print received message
     print("Message from the server: {}".format(serverMsg.decode()))
+    
+#Create Player class to keep all the player relevant data
+class Player:
+    def __init__(self, id, codename, team, equipmentid):
+        self.codename = codename
+        self.equipmentid = equipmentid
+        self.id = id
+        self.team = team
+        self.score = 0
+
+#Create empty list to store player objects
+player_list = []
+
+#addPlayer function/Creates a new player object each time and adds it to the list
+def addPlayer(playerid, playerCodename, playerTeam, playerEquipment):
+    player_list.append(Player(playerid, playerCodename, playerTeam, playerEquipment))
 
 # clientMsg = "hi"
 # start = "202"
