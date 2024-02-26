@@ -1,5 +1,3 @@
-
-
 let red_team = {
     PlayerName: [],
     EquipmentID: []
@@ -9,6 +7,12 @@ let green_team = {
     PlayerName: [],
     EquipmentID: []
 };
+
+function getRandomImageUrl() {
+    console.log(Math.floor(Math.random() * imageURLs.length));
+    console.log(imageURLs[Math.floor(Math.random() * imageURLs.length)]);
+    return imageURLs[Math.floor(Math.random() * imageURLs.length)];
+}
 
 function assignTeams(array) {
     let i = 0;
@@ -82,7 +86,8 @@ function populate_scoreBoard(array, table_id) {
             // Create new table data cells for player, name, and score
             const playerCell = document.createElement('td');
             const playerImage = document.createElement('img');
-            playerImage.src = blueTeamImageUrl;
+            playerImage.src = getRandomImageUrl();
+            console.log(playerImage.src);
             playerImage.alt = 'Player Image'; // Set the alt attribute
             playerCell.appendChild(playerImage); // Append the image to the cell
 
@@ -101,6 +106,3 @@ function populate_scoreBoard(array, table_id) {
             tableBody.appendChild(newRow);
         }) 
 }
-
-
-
