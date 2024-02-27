@@ -2,7 +2,7 @@ import socket
 
 def start_udp_server():
     Server_IP = "127.0.0.1"
-    Server_Port = 7501
+    Server_Port = 7500
     ServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
     ServerSocket.bind((Server_IP, Server_Port))
 
