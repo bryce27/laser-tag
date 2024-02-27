@@ -11,6 +11,13 @@ Welcome to the Laser Tag Game for CSCE 3513! This game is built on Flask and uti
     pip install -r requirements.txt
     ```
 
+3. **Edit `.env.example`**: Rename `.env.example` to `.env` and add your Supabase credentials:
+    ```bash
+    SUPABASE_URL="[YOUR-URL-HERE]"
+    SUPABASE_KEY="[YOUR-KEY-HERE]"
+    ```
+    This allows `startme.py` to reference your private credentials using `dotenv`
+
 ## Running the Game
 
 1. **Open `CSCE 3513 Photon`**: Open the folder CSCE 3513 Photon to access the required files to run the Photon Laser Tag game
