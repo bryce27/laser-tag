@@ -2,14 +2,14 @@ import socket
 
 def send_udp_message(message):
     Client_IP = "127.0.0.1"
-    Client_Port = 7500
+    Client_Port = 7501
     ClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
     ClientSocket.bind((Client_IP, Client_Port))
 
     print("UDP Client is up and running")
 
     # Send message to server
-    Server_Address = ("127.0.0.1", 7501)
+    Server_Address = ("127.0.0.1", 7500)
     ClientSocket.sendto(message.encode(), Server_Address)
 
 
