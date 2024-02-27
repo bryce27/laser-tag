@@ -20,6 +20,13 @@ Welcome to the Laser Tag Game for CSCE 3513! This game is built on Flask and uti
     python udp_server.py
     ```
    This script sets up the server to communicate with the laser tag equipment.
+   
+2. **Edit `.env.example`**: Rename `.env.example` to `.env` and add your Supabase credentials:
+    ```bash
+    SUPABASE_URL="[YOUR-URL-HERE]"
+    SUPABASE_KEY="[YOUR-KEY-HERE]"
+    ```
+    This allows `startme.py` to reference your private credentials using `dotenv`
 
 3. **Run `startme.py`**: Open another terminal window, navigate to the root directory of the cloned repository, and run the following command to start the Flask application:
     ```bash
