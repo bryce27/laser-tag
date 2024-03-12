@@ -106,3 +106,27 @@ function populate_scoreBoard(array, table_id) {
             tableBody.appendChild(newRow);
         }) 
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const numberOfStars = 50; // Adjust the number of stars as needed
+    const starsContainer = document.querySelector('.stars');
+
+    for (let i = 0; i < numberOfStars; i++) {
+        createStar();
+    }
+
+    function createStar() {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        setStarPosition(star);
+        starsContainer.appendChild(star);
+    }
+
+    function setStarPosition(star) {
+        const posX = Math.random() * window.innerWidth;
+        const posY = Math.random() * window.innerHeight;
+
+        star.style.left = `${posX}px`;
+        star.style.top = `${posY}px`;
+    }
+});
