@@ -1,0 +1,34 @@
+/* Style for input boxes */
+.team-container {
+    float: left;
+    width: 45%; /* Each team container takes 45% of the width */
+    margin-left: 2.5%; /* Add some space between team containers */
+    margin-right: 2.5%;
+}
+.player-input {
+    width: calc(100% - 10px); /* Input box takes up 100% width minus padding */
+    margin-bottom: 10px;
+    padding: 5px;
+}
+/* Style for save button */
+.button-container {
+    text-align: center; /* Center align the contents */
+    clear: both; /* Ensure the container clears the floats */
+}
+/* Style for save button */
+button {
+    display: inline-block; /* Display as block-level element */
+    margin: 20px auto; /* Center horizontally */
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.container {
+    text-align: center; /* Center-align the contents */}
+
+
