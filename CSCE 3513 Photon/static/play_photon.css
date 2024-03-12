@@ -1,14 +1,59 @@
+@font-face{
+    font-family: userTextFont;
+    src: url("SuperBrigadeCondensed-7B2n4.otf");
+}
+@font-face{
+    font-family: startGameFont;
+    src: url("arcadeclassic.regular.ttf");
+}
+
+/* Style for page background */
+html {
+    background-color: black;
+}
+
+body {
+    background-image: url("backgroundScreen.png");
+    background-size: 2200px;
+    margin: -0.5%;
+    margin-left: -0.5%px;
+    border-style: solid;
+    box-shadow: inset 0px 0px 20px 20px black;
+    border-radius: 40%/20%;
+}
+
+.name-title {
+    text-align: center;
+    margin-top: 75px;
+    img{
+        height: 50px;
+    }
+}
+
+
 /* Style for input boxes */
 .team-container {
     float: left;
-    width: 45%; /* Each team container takes 45% of the width */
-    margin-left: 2.5%; /* Add some space between team containers */
-    margin-right: 2.5%;
+    width: 40%; /* Each team container takes 45% of the width */
+    margin-left: 5%; /* Add some space between team containers */
+    margin-right: 5%;
+    margin-top: 0.5%;
+    color:rgb(226, 202, 43);
+    font-family: userTextFont;
+    text-decoration: underline;
 }
 .player-input {
     width: calc(100% - 10px); /* Input box takes up 100% width minus padding */
     margin-bottom: 10px;
     padding: 5px;
+    border-radius: 20px;
+    background-color: rgb(225, 225, 225);
+    box-shadow: 5px 5px black;
+    text-align: center;
+    font-family: userTextFont;
+    font-size: 100%;
+    letter-spacing: 1.5px;
+    
 }
 /* Style for save button */
 .button-container {
@@ -20,11 +65,15 @@ button {
     display: inline-block; /* Display as block-level element */
     margin: 20px auto; /* Center horizontally */
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    background-color: rgb(226, 202, 43);
+    color: #000000;
+    border: inset #000000;
+    border-radius: 50%;
+    border-width: 5px;
     cursor: pointer;
+    font-family: startGameFont;
+    font-weight: 200;
+    font-size: 30px;
 }
 
 
