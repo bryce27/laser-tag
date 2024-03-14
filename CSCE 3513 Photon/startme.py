@@ -1,13 +1,17 @@
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from supabase import create_client, Client
+from supabase import create_client
 import random
 import string
 
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
+url = "https://xxsgrickhdpcxubeurjk.supabase.co"
+
+key ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4c2dyaWNraGRwY3h1YmV1cmprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDcyNDQ1NDUsImV4cCI6MjAyMjgyMDU0NX0.6RdisJLfJNX6FkK3dx3hR-Ust6A9EdaxCw851uphE7U"
+
+supabase = create_client(url, key)
+
+
 
 
 def generateID(length=15):
@@ -15,10 +19,9 @@ def generateID(length=15):
     characters = string.ascii_letters + string.digits  # All letters (both cases) and numbers
     return ''.join(random.choice(characters) for _ in range(length))
 
-def insert_player(playerName, id):
-    randomID  = generateID()
+def insert_player(playerName, playerID):
     if playerName is not None:
-        supabase.table("CurrentGameTable").insert({"id": randomID, "name": playerName, "equipment_id": int(id)}).execute()
+        supabase.table("CurrentGameTable").insert({"name": playerName, "equipment_id": int(playerID)}).execute()
 
 
 
@@ -26,6 +29,8 @@ def insert_player(playerName, id):
 
 def clear_table():
     supabase.table("CurrentGameTable").delete().neq('name', '0').execute()
+    #supabase.table("playerNameTable").delete().neq("name", "hey").execute()
+
 
 
 
@@ -77,7 +82,7 @@ def save_players():
         i = 0  # Initialize i outside the loop
         for name in playerNames:
             if name is not None:
-                supabase.table("playerNameTable").insert({"name": name}).execute()
+                supabase.table("playerNameTable").insert({"playerID": name}).execute()
                 insert_player(name, equipmentIds[i])
                 uc.send_udp_message(name +  " Equipment: " + equipmentIds[i])
             i += 1  # Increment i within the loop

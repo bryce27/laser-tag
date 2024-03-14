@@ -39,10 +39,10 @@ function start_game() {
         });
 
         // Log blue team player names and red team equipment IDs to the console
-        console.log("Players:", names_ids_Array.PlayerName);
-        console.log("Equipment Ids:", names_ids_Array.EquipmentID);
+       // console.log("Player ID:", names_ids_Array.PlayerName);
+       // console.log("Equipment Ids:", names_ids_Array.EquipmentID);
 
-        console.log(names_ids_Array);
+        //console.log(names_ids_Array);
 
 
         // // Send a POST request to Flask server with player names
@@ -58,13 +58,20 @@ function start_game() {
         })
         .then(response => {
             // Handle response from the server
+            console.log("RESPONSE");
             if (response.ok) {
+        
                 console.log('Save successful');
+                return response.json();
                 // Call game() function if response is successful
-                game();
+                //
             } else {
                 console.error('Save failed');
             }
+        })    .then(data => {
+                game();
+                console.log(data.message); // Log the message
+         
         })
         .catch(error => {
             // Log any errors that occur during the fetch operation
@@ -73,7 +80,26 @@ function start_game() {
     } 
 
 
-
+    function resetInputValues() 
+    {
+        var playerInputs = document.querySelectorAll('#player-container .player-input');
+        playerInputs.forEach(function(input) 
+        {
+            input.value = "";
+        });
+        var equipmentInputs = document.querySelectorAll('#equipment-container .player-input');
+        equipmentInputs.forEach(function(input) 
+        {
+            input.value = "";
+        });
+    }
+    document.addEventListener('keydown', function(event) 
+    {
+        if (event.key === 'F12') 
+        {
+            resetInputValues();
+        }
+    });
 
 
 

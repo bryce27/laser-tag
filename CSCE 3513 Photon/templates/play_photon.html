@@ -16,7 +16,7 @@
 
         <!-- Blue Team Input Boxes -->
         <div id="player-container" class="team-container">
-            <h1>Player Name</h1>
+            <h1>Player ID</h1>
             <input class="player-input" type="text" placeholder="Enter player name">
             <input class="player-input" type="text" placeholder="Enter player name">
             <input class="player-input" type="text" placeholder="Enter player name">
@@ -46,31 +46,6 @@
         <!-- Save Button -->
         <button onclick="start_game()" id="save-button">START GAME</button>
     </div>
-    <script>
-        function resetInputValues() 
-        {
-            var playerInputs = document.querySelectorAll('#player-container .player-input');
-            playerInputs.forEach(function(input) 
-            {
-                input.value = "";
-            });
-            var equipmentInputs = document.querySelectorAll('#equipment-container .player-input');
-            equipmentInputs.forEach(function(input) 
-            {
-                input.value = "";
-            });
-        }
-        document.addEventListener('keydown', function(event) 
-        {
-            if (event.key === 'F12') 
-            {
-                resetInputValues();
-            }
-        });
-        function start_game() 
-        {
-            console.log("Game started");
-        }
-    </script>
+
 </body>
 </html>
