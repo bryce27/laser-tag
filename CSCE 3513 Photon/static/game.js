@@ -130,3 +130,22 @@ document.addEventListener('DOMContentLoaded', function () {
         star.style.top = `${posY}px`;
     }
 });
+
+// Makes sure most recent update is visible 
+function scrollToBottom() {
+    var updateScreen = document.getElementById("game-action");
+    if (updateScreen)
+        updateScreen.scrollTop = updateScreen.scrollHeight;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Add game updates to action window 
+    function addTextToScreen(text) {
+    const updateScreen = document.getElementById('game-action');
+    let newText = document.createElement('option');
+    newText.text = text;
+    updateScreen.add(newText);
+    console.log("Text to canvas has been called!");
+    }
+    scrollToBottom();
+});
