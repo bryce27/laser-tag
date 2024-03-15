@@ -84,3 +84,23 @@ img {
 .score-column {
     width: 50px; /* Adjust the width as needed */
 }
+
+/* Action window styles */
+.action-container {
+    padding-left: 2%;
+}
+
+select {
+    margin-top: 5px;
+    background-color: gray;
+    border: 5px solid #ddd;
+}
+
+/* Add some space between updates */
+option {
+    margin-bottom: 5px; 
+}
+
+h1 {
+    margin-bottom: 0px; 
+}
