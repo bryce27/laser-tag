@@ -24,6 +24,31 @@
     </script>
 </head>
 <body>
+
+    <!-- Create a 5min Timer for the game-->
+    <div style="text-align: center;"> Time left = <span id="mins">5</span>:<span id="secs">00</span></div>
+    <script>
+        timer();
+
+        async function timer(){
+            let mins = Math.floor(document.getElementById('mins').innerHTML);
+            let secs = Math.floor(document.getElementById('secs').innerHTML);
+            secs = secs + (mins*60);
+            if(secs > 0){
+                secs = secs - 1;
+                
+                document.getElementById('mins').innerHTML = parseInt((secs/60), 10);
+                secs = secs % 60;
+                if(secs < 10){
+                    document.getElementById('secs').innerHTML = "0" + secs;
+                }else{
+                    document.getElementById('secs').innerHTML = secs;
+                }
+            setTimeout(timer, 1000);
+            }
+        }
+    </script>
+    
     <div class="stars"></div>
     <div class="table-container">
         <table id="table1">
