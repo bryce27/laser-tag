@@ -1,9 +1,0 @@
-# dotenv
-python-dotenv
-supabase
-python-dotenv
-Flask
-# os
-# socket
-# string
-# random
