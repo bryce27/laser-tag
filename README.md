@@ -21,7 +21,7 @@
     ```
    This script simulates traffic between four players: 2 red and 2 green. The server will prompt you to enter four equipment IDs. Enter 1 and 3 for the red players, and 2 and 4 for the green players.
 
-2. **Run `startme.py`**: Open another terminal window, navigate to the root directory of the cloned repository, and run the following command to start the Flask application depending on the operating system:
+2. **Run `startme.py`**: In a separate terminal window, navigate to the root directory of the cloned repository, and run the following command to start the Flask application depending on the operating system:
     ```bash
     python3 startme.py
     ```
