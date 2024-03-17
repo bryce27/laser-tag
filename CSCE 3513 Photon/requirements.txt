@@ -1,7 +1,0 @@
-supabase
-python-dotenv
-Flask
-os
-socket
-string
-random
