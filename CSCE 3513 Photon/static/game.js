@@ -9,15 +9,11 @@ let green_team = {
 };
 
 function getRandomImageUrl() {
-    console.log(Math.floor(Math.random() * imageURLs.length));
-    console.log(imageURLs[Math.floor(Math.random() * imageURLs.length)]);
     return imageURLs[Math.floor(Math.random() * imageURLs.length)];
 }
 
 function assignTeams(array) {
     let i = 0;
-    console.log("HEYYYYYYY");
-    console.log(array);
     array.forEach(function(item) {
         if (parseInt(item.equipment_id) % 2 == 0) {
             green_team.EquipmentID.push(item.equipment_id);
@@ -31,11 +27,13 @@ function assignTeams(array) {
 
     });
 
-    console.log(`Green Team: ${red_team.PlayerName}`);
-   // console.log(green_team);
+
 }
 
-function fetchPlayerData() {
+
+
+
+function fetchAndProcessPlayerData() {
     return fetch('/get_data')
         .then(response => {
             if (!response.ok) {
@@ -43,32 +41,27 @@ function fetchPlayerData() {
             }
             return response.json();
         })
-        .then(data => {
-            // Process the data as needed
-            console.log('Player data:', data);
-            return data; // Return the player data
+        .then(playerData => {
+            // Process the player data
+            assignTeams(playerData);
+            populate_scoreBoard(red_team, '#table1');
+            populate_scoreBoard(green_team, '#table2');
+            
         })
         .catch(error => {
-            console.error('Error fetching player data:', error);
+            console.error('Error fetching or processing player data:', error);
             throw error; // Re-throw the error to propagate it
         });
 }
 
 // Usage example:
-fetchPlayerData()
-    .then(playerData => {
-        // Handle the player data
-        assignTeams(playerData)
-        populate_scoreBoard(red_team, '#table1');
-        populate_scoreBoard(green_team, '#table2');
-        console.log('Received player data:', playerData.data)
-    })
+fetchAndProcessPlayerData()
     .catch(error => {
         // Handle errors
         console.error('Error:', error);
     });
 
-
+   
 
 
 
@@ -81,7 +74,6 @@ fetchPlayerData()
 
 function populate_scoreBoard(array, table_id) {
     // Get a reference to the table body
-        console.log(`Green Team: ${array.PlayerName}`);
         array.PlayerName.forEach(obj => {
             const tableBody = document.querySelector(`${table_id} tbody`);
 
@@ -92,7 +84,6 @@ function populate_scoreBoard(array, table_id) {
             const playerCell = document.createElement('td');
             const playerImage = document.createElement('img');
             playerImage.src = getRandomImageUrl();
-            console.log(playerImage.src);
             playerImage.alt = 'Player Image'; // Set the alt attribute
             playerCell.appendChild(playerImage); // Append the image to the cell
 
@@ -137,37 +128,109 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Makes sure most recent update is visible 
+function addTextToScreen(text) {
+    const updateScreen = document.getElementById('game-action');
+    let newText = document.createElement('option');
+    newText.text = text;
+    updateScreen.add(newText);
+    scrollToBottom();
+}
+
 function scrollToBottom() {
     var updateScreen = document.getElementById("game-action");
     if (updateScreen)
         updateScreen.scrollTop = updateScreen.scrollHeight;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Add game updates to action window 
-    function addTextToScreen(text) {
-    const updateScreen = document.getElementById('game-action');
-    let newText = document.createElement('option');
-    newText.text = text;
-    updateScreen.add(newText);
+
+
+
+
+function send_udp_message(code) {
+    fetch('/send_udp_message', {
+        method: 'POST',
+        body: JSON.stringify({ message: code }), // Send the message as JSON in the request body
+        headers: {
+            'Content-Type': 'application/json' // Set the Content-Type header to application/json
+        }
+    })
+    .then(response => {
+        // Check if the response is OK
+        if (!response.ok) {
+            throw new Error('Failed to send UDP message'); // Throw an error if the response is not OK
+        }
+        return response.body.getReader(); // Return a ReadableStream object to read the response body
+    })
+    .then(reader => {
+        // Define a function to process each chunk of data as it arrives
+        const processChunk = ({ done, value }) => {
+            if (done) {
+                console.log('All data received'); // Log a message when all data has been received
+                return;
+            }
+            const message = new TextDecoder().decode(value); // Decode the chunk of data to a string
+            console.log('UDP message received:', message); // Log the received message
+            if (message.includes(":53")) {
+                let [eqID, base] = message.split(':');
+                eqID = green_team.EquipmentID.indexOf(parseInt(eqID));
+                playerName = green_team.PlayerName[eqID];
+                addTextToScreen("Red Base Scored by " + playerName);
+
+            } else if (message.includes(":43")) {
+                let [eqID, base] = message.split(':');
+                eqID = red_team.EquipmentID.indexOf(parseInt(eqID));
+                playerName = red_team.PlayerName[eqID];
+                addTextToScreen("Green Base Scored by " + playerName);
+            } else if (!(message.includes(":"))) {
+                    addTextToScreen(message);
+            } else {
+                text = processHit(message);
+                if (!text.includes(undefined))
+                    addTextToScreen(text);
+            }
+            reader.read().then(processChunk); // Read the next chunk of data and process it recursively
+        };
+
+        // Start reading the response body as a stream and process each chunk
+        reader.read().then(processChunk);
+    })
+    .catch(error => {
+        console.error('Error sending UDP message:', error); // Log any errors that occur during the fetch request or response processing
+    });
+}
+
+
+
+
+
+// Function to process the hit and return the result
+function processHit(message) {
+    let [shot, hit] = message.split(':');
+    if (shot % 2 == 0) {
+        shotIndex = green_team.EquipmentID.indexOf(parseInt(shot));
+        shotName = green_team.PlayerName[shotIndex];
+    } else {
+        shotIndex = red_team.EquipmentID.indexOf(parseInt(shot));
+        shotName = red_team.PlayerName[shotIndex];
     }
-    scrollToBottom();
-});
 
-
-
-fetch('/send_udp_message', {
-    method: 'POST'
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error('Failed to send UDP message');
+    if (hit % 2 == 0) {
+        hitIndex = green_team.EquipmentID.indexOf(parseInt(hit));
+        hitName = green_team.PlayerName[hitIndex];
+    } else {
+        hitIndex = red_team.EquipmentID.indexOf(parseInt(hit));
+        hitName = red_team.PlayerName[hitIndex];
     }
-    return response.json();
-})
-.then(data => {
-    console.log('UDP message sent:', data.message);
-})
-.catch(error => {
-    console.error('Error sending UDP message:', error);
-});
+
+    return shotName + " hit " + hitName;
+    
+
+    // if (greenPlayer && redPlayer) {
+    //     return greenPlayer + " hit " + redPlayer;
+    // } else {
+    //     return "One or both players not found";
+    // }
+}
+
+send_udp_message("202");
+send_udp_message("221");

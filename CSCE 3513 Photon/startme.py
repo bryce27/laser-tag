@@ -146,23 +146,14 @@ def get_red_data():
     return json.dumps(players)
 
 
-
+from flask import Response
 
 @app.route('/send_udp_message', methods=['POST'])
 def send_udp_message_route():
-    uc.send_udp_message('202')  # Call the function from the imported module
-    uc.send_udp_message('Hey')
-    # uc.send_udp_message('02')
-    # uc.send_udp_message('02')
-    # uc.send_udp_message('02')
-    # uc.send_udp_message('02')
-    # uc.send_udp_message('02')
-    # uc.send_udp_message('02')
-    # uc.send_udp_message('02')
-    # uc.send_udp_message('02')
-    # uc.send_udp_message('02')
-    # uc.send_udp_message('22')
-    return jsonify({'message': 'UDP message sent successfully'})
+    message = request.json.get('message')  # Get the parameter value from the request
+    response_generator = uc.send_udp_message(message)  # Get the generator object
+    print("RESPONSE    " + str(response_generator))
+    return Response(response_generator, mimetype='text/event-stream')
 
 
 
