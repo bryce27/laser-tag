@@ -1,39 +1,42 @@
-# Laser Tag Team 18 Readme
-
-Welcome to the Laser Tag Game for CSCE 3513! This game is built on Flask and utilizes two main scripts: `udp_server.py` and `startme.py`. Follow the instructions below to set up and play the game.
-
 ## Setup
 
-1. **Clone the Repository**: First, clone this repository to your local machine.
+1. **Choose the Correct Version**: Depending on your operating system, download the appropriate version of the Laser Tag Game: 
+   - For Linux Ubuntu users: Download 'CSCE 3513 Photon Linux'
+   - For Windows or macOS users: Download 'CSCE 3513 Photon'
 
-2. **Install Dependencies**: Make sure you have Python installed on your system. Then, install the required dependencies using pip:
-    ```bash
-    pip install -r requirements.txt
-    ```
+2. **Clone the Repository**: After downloading, clone this repository to your local machine.
+
+3. **Install Dependencies**: Ensure that you have Python and PostgreSQL installed on your system. Then, install the required dependencies using pip:
+   - For Linux Ubuntu users: supabase_py, python-dotenv, Flask
+   - For Windows or macOS users: supabase, python-dotenv, Flask
 
 ## Running the Game
 
-1. **Open `CSCE 3513 Photon`**: Open the folder CSCE 3513 Photon to access the required files to run the Photon Laser Tag game
-
-2. **Run `udp_server.py`**: Open a terminal window, navigate to the root directory of the cloned repository, and run the following command to start the UDP server:
+1. **Start `udp_server.py`**: Open a terminal window, navigate to the root directory of the cloned repository, and run the following command to start the UDP server depending on the operating system:
     ```bash
-    python udp_server.py
+    python3 udp_server.py
     ```
-   This script sets up the server to communicate with the laser tag equipment.
-
-3. **Run `startme.py`**: Open another terminal window, navigate to the root directory of the cloned repository, and run the following command to start the Flask application:
     ```bash
-    python startme.py
+    py udp_server.py
+    ```
+   This script simulates traffic between four players: 2 red and 2 green. The server will prompt you to enter four equipment IDs. Enter 1 and 3 for the red players, and 2 and 4 for the green players.
+
+2. **Run `startme.py`**: In a separate terminal window, navigate to the root directory of the cloned repository, and run the following command to start the Flask application depending on the operating system:
+    ```bash
+    python3 startme.py
+    ```
+    ```bash
+    py startme.py
     ```
    This script launches the game interface.
 
-4. **Enter URL**: Navigate to http://127.0.0.1:5000/ to view the game in your browser
+3. **Access the Game**: Open a web browser and navigate to http://127.0.0.1:5000/ to access the game interface.
 
-5. **Enter Player Information**: In the web interface that opens, enter your player name and equipment ID. Then click "Start Game" to proceed.
+4. **Enter Player Information**: In the web interface, enter the player IDs for all four players in the designated column. Then, enter the corresponding equipment IDs (1, 2, 3, and 4) that you previously entered when prompted by `udp_server.py`. Finally, click "Start Game" to initiate the game.
 
-6. **Gameplay**: Once the game starts, play the laser tag game as instructed. The score will be displayed on the scoreboard.
+5. **Gameplay**: Once the game starts, follow the instructions to play the laser tag game. The scoreboard will display the score.
 
-7. **End Game**: After you finish playing, you can close the browser window to end the game session.
+6. **End Game**: After finishing the game, you can close the browser window to end the session.
 
 ## Team 18 Members
 - Blake (GitHub: Blake-wood)
