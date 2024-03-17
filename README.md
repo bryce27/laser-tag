@@ -6,7 +6,7 @@
 
 2. **Clone the Repository**: After downloading, clone this repository to your local machine.
 
-3. **Install Dependencies**: Ensure that you have Python installed on your system. Then, install the required dependencies using pip:
+3. **Install Dependencies**: Ensure that you have Python and PostgreSQL installed on your system. Then, install the required dependencies using pip:
    - For Linux Ubuntu users: supabase_py, python-dotenv, Flask
    - For Windows or macOS users: supabase, python-dotenv, Flask
 
