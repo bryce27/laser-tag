@@ -42,6 +42,17 @@ body {
 }
 
 
+
+
+.greenTeam {
+    background-color: #0b7123;
+}
+
+.centerAlign {
+    text-align: center;
+}
+
+
 .table-container {
     display: flex;
     justify-content: space-around;
@@ -58,6 +69,8 @@ th, td {
     text-align: left;
     padding: 8px;
 }
+
+
 
 th {
     background-color: #973f3f;
