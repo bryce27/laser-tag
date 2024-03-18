@@ -1,0 +1,138 @@
+@font-face {
+    font-family: 'BadRobotFont';
+    src: url('BadRobot.ttf') format('truetype');
+
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'BadRobotFont', sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    animation: twinkle 5s infinite; /* Adjust the animation duration as needed */
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    background-image: url('Star.png');
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    will-change: transform;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+}
+
+@keyframes flashRed {
+    0% { background-color:  #973f3f; }
+    50% { background-color: rgba(255, 255, 255, 0.8); } /* Brighter color */
+    100% { background-color:  #973f3f; }
+  }
+  
+  .flashRed {
+    animation: flashRed 1s infinite;
+  }
+
+  @keyframes flashGreen {
+    0% { background-color: #0b7123; }
+    50% { background-color: rgba(255, 255, 255, 0.8); } /* Brighter color */
+    100% { background-color: #0b7123; }
+  }
+  
+  .flashGreen {
+    animation: flashGreen 1s infinite;
+  }
+
+
+
+.greenTeam {
+    background-color: #0b7123;
+}
+
+.centerAlign {
+    text-align: center;
+}
+
+
+.table-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 45%;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+
+
+th {
+    background-color: #973f3f;
+}
+
+tr:nth-child(even) {
+    background-color: #000000;
+}
+
+img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.player-column {
+    width: 50px;
+}
+
+.name-column {
+    width: 150px; /* Adjust the width as needed */
+}
+
+.score-column {
+    width: 50px; /* Adjust the width as needed */
+}
+
+/* Action window styles */
+.action-container {
+    padding-left: 2%;
+}
+
+select {
+    margin-top: 5px;
+    background-color: gray;
+    border: 5px solid #ddd;
+}
+
+/* Add some space between updates */
+option {
+    margin-bottom: 5px; 
+}
+
+h1 {
+    margin-bottom: 0px; 
+}
