@@ -32,9 +32,9 @@
 
 3. **Access the Game**: Open a web browser and navigate to http://127.0.0.1:5000/ to access the game interface.
 
-4. **Enter Player Information**: In the web interface, enter the player IDs for all four players in the designated column. Then, enter the corresponding equipment IDs (1, 2, 3, and 4) that you previously entered when prompted by `udp_server.py`. Finally, click "Start Game" to initiate the game.
+4. **Enter Player Information**: In the web interface, enter the player IDs for all four players in the designated column. Then, enter the corresponding equipment IDs (1, 2, 3, and 4) that you previously entered when prompted by `udp_server.py`. Finally, click "Start Game" to initiate a count-down timer to initiate the game. Clicking F12 will clear all entries.
 
-5. **Gameplay**: Once the game starts, follow the instructions to play the laser tag game. The scoreboard will display the score.
+5. **Gameplay**: Once the game starts, the scoreboard will display the score.
 
 6. **End Game**: After finishing the game, you can close the browser window to end the session.
 
