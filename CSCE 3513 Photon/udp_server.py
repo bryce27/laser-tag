@@ -33,7 +33,7 @@ def server():
             server_socket.sendto(message.encode(), client_address)
             time.sleep(1)
             print("Lets start the Game")
-            while count < 5:
+            while count < 25:
                 if random.randint(1, 2) == 1:
                     redplayer = redPlayer1
                 else:
