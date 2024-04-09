@@ -131,6 +131,8 @@ select {
 /* Add some space between updates */
 option {
     margin-bottom: 5px; 
+    font-family: 'verdana';
+    font-size: x-large;
 }
 
 h1 {

@@ -100,7 +100,7 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
     if (indicator == "base") {
         console.log("100");
         row.cells[2].textContent = parseInt(row.cells[2].textContent) + 100;
-        row.cells[1].innerHTML = `<span style="font-size: larger; font-weight: bold; color: gold;">B </span>${row.cells[1].textContent}`;
+        row.cells[1].innerHTML = `<span style="font-family: 'Copperplate'; font-size: xx-large; font-weight: bold; color: gold;">B </span>${row.cells[1].textContent}`;
         const newScore = currentScore + 100;
         console.log("Score: " + newScore);
         totalScoreElement.textContent = `Total Score: ${newScore}`;
