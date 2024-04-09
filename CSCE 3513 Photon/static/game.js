@@ -94,22 +94,20 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
     const tableBody = document.querySelector(`#${table_id} tbody`);
     const totalScoreElement = document.querySelector(`#${table_id} thead tr:first-child th:nth-child(2)`);
     const currentScore = parseInt(totalScoreElement.textContent.match(/-?\d+/)[0], 10);
-    console.log("Row No. " + rowNumber);
     console.log("Current Score " + table_id + " " + currentScore);
     const row = tableBody.querySelector(`tr:nth-child(${rowNumber + 1})`);
     if (indicator == "base") {
-        console.log("100");
         row.cells[2].textContent = parseInt(row.cells[2].textContent) + 100;
         row.cells[1].innerHTML = `<span style="font-family: 'Copperplate'; font-size: xx-large; font-weight: bold; color: gold; border: solid; border-color: gold; padding-left: 8px; margin-right: 5px;">B </span>${row.cells[1].textContent}`;
         const newScore = currentScore + 100;
-        console.log("Score: " + newScore);
+        console.log("New Score: " + newScore);
         totalScoreElement.textContent = `Total Score: ${newScore}`;
     } else {
-        if (hitOrShot == "wasHit") {
+        if (hitOrShot == "sameTeam") {
             console.log("-10");
             row.cells[2].textContent = parseInt(row.cells[2].textContent) - 10;
             const newScore = currentScore - 10;
-            console.log("Score: " + newScore);
+            console.log("New Score: " + newScore);
             totalScoreElement.textContent = `Total Score: ${newScore}`;
         }
 
@@ -117,7 +115,7 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
             console.log("10");
             row.cells[2].textContent = parseInt(row.cells[2].textContent) + 10;
             const newScore = currentScore + 10;
-            console.log("Score: " + newScore);
+            console.log("New Score: " + newScore);
             totalScoreElement.textContent = `Total Score: ${newScore}`;
         }
 
@@ -144,14 +142,16 @@ function fetchAndProcessPlayerData() {
             console.log("Green " + red_team.PlayerName + " " + red_team.EquipmentID);
             console.log("Red " + green_team.PlayerName +  " " + green_team.EquipmentID);
         })
+        .then(() => {
+            // Send UDP message "202"
+            send_udp_message("202");
+            send_udp_message("1:1");
+        })
         .catch(error => {
             console.error('Error fetching or processing player data:', error);
             throw error; // Re-throw the error to propagate it
         });
 }
-
-
-
 
 // Usage example:
 fetchAndProcessPlayerData()
@@ -166,7 +166,6 @@ fetchAndProcessPlayerData()
 
 
 
-//populate_scoreBoard(red_team, '#table2');
 
 
 
@@ -263,7 +262,6 @@ function reorderRows(table_id, array) {
         if (name.startsWith("B ")) {
             name = name.substring(2); // Remove "B " from the beginning
         }
-        console.log("Index of " + name + " " + array.PlayerName.indexOf(name));
         nameIndex = array.PlayerName.indexOf(name);
         const offset = nameIndex - i;
         offsetArray.push(offset);
@@ -336,12 +334,12 @@ function send_udp_message(code) {
                             shooterIndex = green_team.EquipmentID.indexOf(parseInt(shooterIndex));
                             playerName = green_team.PlayerName[shooterIndex];
                             offset = green_team.Offset[shooterIndex];
-                            setScore(greenTableId, shooterIndex + offset, 'normal', "wasHit");
+                            setScore(greenTableId, shooterIndex + offset, 'normal', "sameTeam");
                             reorderRows(greenTableId, green_team);
                         } else {
                             shooterIndex = red_team.EquipmentID.indexOf(parseInt(shooterIndex));
                             offset = red_team.Offset[shooterIndex];
-                            setScore(redTableId, shooterIndex + offset, 'normal', "wasHit");
+                            setScore(redTableId, shooterIndex + offset, 'normal', "sameTeam");
                             reorderRows(redTableId, red_team);
                             playerName = red_team.PlayerName[shooterIndex];                      
                         }
@@ -414,7 +412,7 @@ function processHit(message) {
         hitIndex = red_team.EquipmentID.indexOf(parseInt(hit));
         hitName = red_team.PlayerName[hitIndex];
     }
-
+    console.log(shotName + " hit " + hitName);
     return shotName + " hit " + hitName;
     
 
@@ -425,5 +423,5 @@ function processHit(message) {
     // }
 }
 
-send_udp_message("202");
+
 
