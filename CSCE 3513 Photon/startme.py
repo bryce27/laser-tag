@@ -5,6 +5,7 @@ load_dotenv()
 from supabase import create_client
 import random
 import string
+import webbrowser
 
 url = "https://xxsgrickhdpcxubeurjk.supabase.co"
 
@@ -144,4 +145,5 @@ def send_udp_message_route():
 
 
 if __name__ == '__main__':
+    webbrowser.open('http://127.0.0.1:5000')
     app.run(debug=True, port=5000)
