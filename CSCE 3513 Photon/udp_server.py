@@ -10,15 +10,15 @@ def server():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_socket.bind(server_address)
 
-    redPlayer1 = input('Enter equipment id of red player 1 ==> ')
-    redPlayer2 = input('Enter equipment id of red player 2 ==> ')
-    greenPlayer1 = input('Enter equipment id of green player 1 ==> ')
-    greenPlayer2 = input('Enter equipment id of green player 2 ==> ')
+    # redPlayer1 = input('Enter equipment id of red player 1 ==> ')
+    # redPlayer2 = input('Enter equipment id of red player 2 ==> ')
+    # greenPlayer1 = input('Enter equipment id of green player 1 ==> ')
+    # greenPlayer2 = input('Enter equipment id of green player 2 ==> ')
 
     print ("")
     print ("waiting for start from game_software")
 
-
+    gameStart = False
 
     while True:
         # Receive data from the client
@@ -33,6 +33,7 @@ def server():
             server_socket.sendto(message.encode(), client_address)
             time.sleep(1)
             print("Lets start the Game")
+            gameStart=True
             # while count < 25:
             #     if random.randint(1, 2) == 1:
             #         redplayer = redPlayer1
@@ -61,13 +62,13 @@ def server():
                 # time.sleep(1)
 
                 
-        if received_data.decode() == '221':
+        if received_data.decode() == '221' and gameStart:
              message = "Game is Over"
              server_socket.sendto(message.encode(), client_address)
              print("END GAME")
              break
         
-        if ':' in received_data.decode():
+        if ':' in received_data.decode() and gameStart:
              message = received_data.decode()
              server_socket.sendto(message.encode(), client_address)
              
