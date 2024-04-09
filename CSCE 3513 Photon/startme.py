@@ -1,4 +1,5 @@
 import os
+import time
 from dotenv import load_dotenv
 load_dotenv()
 from supabase import create_client
@@ -132,8 +133,10 @@ from flask import Response
 
 @app.route('/send_udp_message', methods=['POST'])
 def send_udp_message_route():
+    print(request.json.get('message'))
     message = request.json.get('message')  # Get the parameter value from the request
-    response_generator = uc.send_udp_message(message)  # Get the generator object
+    response_generator = uc.send_udp_message(message) 
+     # Get the generator object
     print("RESPONSE    " + str(response_generator))
     return Response(response_generator, mimetype='text/event-stream')
 
