@@ -100,7 +100,7 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
     if (indicator == "base") {
         console.log("100");
         row.cells[2].textContent = parseInt(row.cells[2].textContent) + 100;
-        row.cells[1].innerHTML = `<span style="font-family: 'Copperplate'; font-size: xx-large; font-weight: bold; color: gold;">B </span>${row.cells[1].textContent}`;
+        row.cells[1].innerHTML = `<span style="font-family: 'Copperplate'; font-size: xx-large; font-weight: bold; color: gold; border: solid; border-color: gold; padding-left: 8px; margin-right: 5px;">B </span>${row.cells[1].textContent}`;
         const newScore = currentScore + 100;
         console.log("Score: " + newScore);
         totalScoreElement.textContent = `Total Score: ${newScore}`;
@@ -229,7 +229,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Makes sure most recent update is visible 
 function addTextToScreen(text) {
     const updateScreen = document.getElementById('game-action');
     let newText = document.createElement('option');
@@ -237,7 +236,7 @@ function addTextToScreen(text) {
     updateScreen.add(newText);
     scrollToBottom();
 }
-
+// Makes sure most recent update is visible 
 function scrollToBottom() {
     var updateScreen = document.getElementById("game-action");
     if (updateScreen)

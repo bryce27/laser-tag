@@ -123,6 +123,7 @@ img {
 }
 
 select {
+    width: 750px;
     margin-top: 5px;
     background-color: gray;
     border: 5px solid #ddd;
