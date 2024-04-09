@@ -126,8 +126,25 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
 }
 
 function generate() {
-    send_udp_message("1:1");
+    let count = 0;
+
+    const messageCombinations = [
+        "1:1", "2:1", "1:2", "3:2", "4:3", "3:4", "2:53", "1:43", "2:4"
+    ];
+
+    function sendWithDelay() {
+        if (count < 10) {
+            const randomIndex = Math.floor(Math.random() * messageCombinations.length);
+            const randomMessage = messageCombinations[randomIndex];
+            send_udp_message(randomMessage);
+            count++;
+            setTimeout(sendWithDelay, 1000); // 1000 milliseconds = 1 second
+        }
+    }
+
+    sendWithDelay(); // Start the loop with the initial call
 }
+
 
 function fetchAndProcessPlayerData() {
     return fetch('/get_data')
@@ -278,7 +295,6 @@ function reorderRows(table_id, array) {
 
 
 function send_udp_message(code) {
-    console.log(code);
     fetch('/send_udp_message', {
         method: 'POST',
         body: JSON.stringify({ message: code }), // Send the message as JSON in the request body
@@ -297,11 +313,9 @@ function send_udp_message(code) {
         // Define a function to process each chunk of data as it arrives
         const processChunk = ({ done, value }) => {
             if (done) {
-                console.log('All data received'); // Log a message when all data has been received
                 return;
             }
             const message = new TextDecoder().decode(value); // Decode the chunk of data to a string
-            console.log('UDP message received:', message); // Log the received message
             if (message.includes(":53")) {
                 let [eqID, base] = message.split(':');
                 if (eqID % 2 == 0) {
@@ -330,7 +344,7 @@ function send_udp_message(code) {
                 if (!text.includes(undefined)) {
                     addTextToScreen(text);
                     let [shooterIndex, hitIndex] = message.split(':');
-                    if (shooterIndex == hitIndex) {
+                    if (shooterIndex % 2 == hitIndex % 2) {
                         if (shooterIndex % 2 == 0) {
                             //get index of shooter
                             console.log("same Team");
