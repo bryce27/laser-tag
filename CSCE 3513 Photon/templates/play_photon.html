@@ -44,7 +44,15 @@
     <!-- Save Button -->
     <div class="button-container">
         <!-- Save Button -->
-        <button onclick="start_game()" id="save-button">START GAME</button>
+        <button onclick="start_game();buttonFix()" id="save-button">START GAME</button>
+        <script>
+            function buttonFix() {
+            document.getElementById("save-button").disabled = true;
+
+            setTimeout(function() {
+                document.getElementById("save-button").disabled = false;
+            }, 5000);}
+        </script>
     </div>
 
 </body>
