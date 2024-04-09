@@ -426,8 +426,4 @@ function processHit(message) {
 }
 
 send_udp_message("202");
-send_udp_message("4:4");
-send_udp_message("1:1");
-send_udp_message("3:3");
-
 
