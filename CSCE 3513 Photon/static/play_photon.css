@@ -33,12 +33,12 @@ body {
 
 /* Style for input boxes */
 .team-container {
-    float: left;
-    width: 40%; /* Each team container takes 45% of the width */
-    margin-left: 5%; /* Add some space between team containers */
-    margin-right: 5%;
-    margin-top: 0.5%;
-    color:rgb(226, 202, 43);
+    display: inline-block; 
+    width: 25%; 
+    margin: 0 2.5%; 
+    text-align: center; 
+    vertical-align: top; 
+    color: rgb(226, 202, 43);
     font-family: userTextFont;
     text-decoration: underline;
 }
