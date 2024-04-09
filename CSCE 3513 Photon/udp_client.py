@@ -6,38 +6,20 @@ def send_udp_message(message):
 
     # Create a UDP socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    # Send data to the server
-    client_socket.sendto(message.encode(), server_address)
+    # Set a timeout for receiving response
+    client_socket.settimeout(5)  # Adjust the timeout as needed
 
-    messageArray = []
-    # Receive response from the server
-    while True:
+    try:
+        # Send data to the server
+        client_socket.sendto(message.encode(), server_address)
+
+        # Receive response from the server
         data, _ = client_socket.recvfrom(buffer_size)
-        yield data.decode()
-        # messageArray.append(data.decode())
-        print("Received response from server:", data.decode())
-        # if (data.decode() == '221'):
-        #     break
-
-    # return messageArray
-
-    
-
-
-    
-
-
-
-
-
-
-
-
-# start = "202"
-# end = "221"
-# redBase = "53"
-# greenBase = "43"
-# serverAddress = 7501
-# serverAddressPort = ("127.0.0.1", serverAddress)
-# bytesToSend = str.encode(clientMsg)
-# bufferSize = 1024
+        response = data.decode()
+        print("Received response from server:", response)
+        return response
+    except Exception as e:
+        print("Error sending or receiving UDP message:", e)
+        return None
+    finally:
+        client_socket.close()
