@@ -145,5 +145,7 @@ def send_udp_message_route():
 
 
 if __name__ == '__main__':
-    webbrowser.open('http://127.0.0.1:5000')
-    app.run(debug=True, port=5000)
+    if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
+        # Open the browser automatically
+        webbrowser.open('http://127.0.0.1:5000')
+app.run(debug=True, port=5000)
