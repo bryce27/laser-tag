@@ -68,6 +68,27 @@ def load_screen():
 def get_image():
     return send_file('static/logo.jpg', mimetype='image/jpg')
 
+@app.route('/get_code_name', methods=['POST'])
+def getCodeName():
+        data = request.get_json()
+        playerID = data.get('Player_ID', '')
+        print("IDDDDDDD" + playerID)
+        data = supabase.table("playerNameTable").select('*').eq('playerID', playerID).execute()
+        if len(data.data) != 0:
+            playerName = data.data[0]['name']
+            print("NAME " + playerName)
+            return playerName
+        else:
+            return "missing"
+        
+           
+@app.route('/insertPlayerToDataBase', methods=['POST'])
+def insertPlayerToDataBase():
+    data = request.get_json()
+    playerID = data.get('Player_ID', '')
+    codeName=data.get('Code_Name', '')
+    supabase.table("playerNameTable").insert({"playerID": playerID, "name": codeName}).execute()
+    return '204'
 
 
 @app.route('/play_photon/start_game', methods=['POST'])
@@ -78,57 +99,18 @@ def save_players():
         data = request.get_json()
         player_names = data.get('Player_Names', [])
         equipment_ids = data.get('Equipment_Ids', [])
-        
-
-        # Initialize a list to store IDs not found in the database
-        missing_ids = []
-        missing_equipment = []
 
         for i, id in enumerate(player_names):
-            # Check if the player ID exists in the database
-            data = supabase.table("playerNameTable").select('*').eq('playerID', id).execute()
-            if len(data.data) != 0:
-                # If player exists, insert the player
-                #uc.send_udp_message(data.data[0]['name'] +  " Equipment: " + equipment_ids[i])
-                insert_player(data.data[0]['name'], equipment_ids[i])
-            else:
-                # If player doesn't exist, add the ID to missing IDs list
-                missing_ids.append(id)
-                missing_equipment.append(equipment_ids[i])
-                #supabase.table("playerNameTable").insert({"playerID": id}).execute()
+            insert_player(id, equipment_ids[i])
 
-        # Optionally, you can send a response back to the client with missing IDs
-        if missing_ids:
-            return jsonify({'missing_ids': missing_ids, 'missing_equipment': missing_equipment}), 200
-        else:
-            return jsonify({'message': 'Players saved successfully'}), 200
+        return '204'
+ 
 
     except Exception as e:
         print("Error:", e)
         return jsonify({'error': 'An error occurred'}), 500
     
-@app.route('/handle_missing_names', methods=['POST'])
-def handle_missing_players():
-    try:
-        # Get the player names and equipment IDs from the request data
-        data = request.get_json()
-        player_names = data.get('Player_Names', [])
-        equipment_ids = data.get('Equipment_Ids', [])
-        player_ids = data.get('Player_Ids', [])
-        
-        for i, (name, plID, eqID) in enumerate(zip(player_names, player_ids, equipment_ids)):
-            # Check if the player ID exists in the database
-            print("NAMEEEEEEEEEEEEEEEEEEE")
-            insert_player(name, eqID)
-            supabase.table("playerNameTable").insert({"playerID": plID, "name": name}).execute()
-           # uc.send_udp_message(name +  " Equipment: " + eqID)
-            
 
-        return jsonify({'message': 'Players saved successfully'}), 200
-
-    except Exception as e:
-        print("Error:", e)
-        return jsonify({'error': 'An error occurred'}), 500
 
     
 
