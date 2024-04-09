@@ -125,6 +125,9 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
     
 }
 
+function generate() {
+    send_udp_message("1:1");
+}
 
 function fetchAndProcessPlayerData() {
     return fetch('/get_data')
@@ -145,7 +148,6 @@ function fetchAndProcessPlayerData() {
         .then(() => {
             // Send UDP message "202"
             send_udp_message("202");
-            send_udp_message("1:1");
         })
         .catch(error => {
             console.error('Error fetching or processing player data:', error);
@@ -276,6 +278,7 @@ function reorderRows(table_id, array) {
 
 
 function send_udp_message(code) {
+    console.log(code);
     fetch('/send_udp_message', {
         method: 'POST',
         body: JSON.stringify({ message: code }), // Send the message as JSON in the request body
