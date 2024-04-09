@@ -260,6 +260,7 @@ function addTextToScreen(text) {
     let newText = document.createElement('option');
     newText.text = text;
     updateScreen.add(newText);
+    newText.selected = true;
     scrollToBottom();
 }
 // Makes sure most recent update is visible 
