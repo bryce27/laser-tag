@@ -33,32 +33,32 @@ def server():
             server_socket.sendto(message.encode(), client_address)
             time.sleep(1)
             print("Lets start the Game")
-            while count < 25:
-                if random.randint(1, 2) == 1:
-                    redplayer = redPlayer1
-                else:
-                    redplayer = redPlayer2
+            # while count < 25:
+            #     if random.randint(1, 2) == 1:
+            #         redplayer = redPlayer1
+            #     else:
+            #         redplayer = redPlayer2
 
-                if random.randint(1, 2) == 1:
-                    greenplayer = greenPlayer1
-                else:
-                    greenplayer = greenPlayer2
+            #     if random.randint(1, 2) == 1:
+            #         greenplayer = greenPlayer1
+            #     else:
+            #         greenplayer = greenPlayer2
 
-                if random.randint(1, 2) == 1:
-                    message = str(redplayer) + ":" + str(greenplayer)
-                else:
-                    message = str(greenplayer) + ":" + str(redplayer)
+            #     if random.randint(1, 2) == 1:
+            #         message = str(redplayer) + ":" + str(greenplayer)
+            #     else:
+            #         message = str(greenplayer) + ":" + str(redplayer)
 
-                if count == 2:
-                    message = str(redplayer) + ':43'
-                if count == 3:
-                    message = str(greenplayer) + ':53'
+            #     if count == 2:
+            #         message = str(redplayer) + ':43'
+            #     if count == 3:
+            #         message = str(greenplayer) + ':53'
 
-                print("MESSAGEEE" + message)
+                # print("MESSAGEEE" + message)
              
-                server_socket.sendto(message.encode(), client_address)
-                count = count + 1
-                time.sleep(1)
+                # server_socket.sendto(message.encode(), client_address)
+                # count = count + 1
+                # time.sleep(1)
 
                 
         if received_data.decode() == '221':
