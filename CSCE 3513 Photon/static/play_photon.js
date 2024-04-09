@@ -1,4 +1,106 @@
 
+document.addEventListener('DOMContentLoaded', function() {
+    function updateCodeName(input) {
+        const codeNameInput = document.querySelector(`#codeName-container .player-input[id="${input.id}"]`);
+        if (codeNameInput) {
+            const playerID = input.value;
+            getCodeName(playerID)
+                .then(codeName => {
+                    if (codeName == "missing") {
+                        codeName = prompt('Please enter code name for the following ID: ' + playerID);
+                        codeNameInput.value = codeName;
+                        insertPlayerToDataBase(playerID, codeName);
+                    } else {
+                        codeNameInput.value = codeName;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+
+    function handleInputEvent(input) {
+        if (input.closest('#player-container')) {
+            updateCodeName(input);
+        } else if (input.closest('#equipment-container')) {
+            const equipmentID = input.value;
+            send_udp_message(equipmentID);
+        }
+    }
+
+    // Select all player-input elements in both player-container and equipment-container
+    const playerInputs = document.querySelectorAll('#player-container .player-input, #equipment-container .player-input');
+
+    // Attach event listeners to each input element
+    playerInputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            handleInputEvent(input);
+        });
+
+        input.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                handleInputEvent(input);
+            }
+        });
+    });
+});
+
+
+
+function getCodeName(playerID) {
+    console.log("PLAYER ID " + playerID);
+    return fetch('/get_code_name', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Player_ID: playerID,
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.text(); // Get the response text
+        } else {
+            console.error('Save failed');
+            throw new Error('Save failed'); // Throw an error to trigger the catch block
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        throw error; // Re-throw the error to propagate it to the caller
+    });
+}
+
+function insertPlayerToDataBase(playerID, codeName) {
+    fetch('/insertPlayerToDataBase', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Player_ID: playerID,
+            Code_Name: codeName
+        })
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function send_udp_message(code) {
+    fetch('/send_udp_message', {
+        method: 'POST',
+        body: JSON.stringify({ message: code }), // Send the message as JSON in the request body
+        headers: {
+            'Content-Type': 'application/json' // Set the Content-Type header to application/json
+        }
+    })
+    .catch(error => {
+        console.error('Error sending UDP message:', error); // Log any errors that occur during the fetch request or response processing
+    });
+}
 
 
 let names_ids_Array = {
@@ -7,17 +109,17 @@ let names_ids_Array = {
 };
 
 
+
 function start_game() {
 
-        // Select all player input elements in the blue and red team containers
-        var playerNamesArray = document.querySelectorAll('#player-container .player-input');
+        // Select all player input elements in the playerNames and red team containers
+        var playerNamesArray = document.querySelectorAll('#codeName-container .player-input');
         var equipmentIdsArray = document.querySelectorAll('#equipment-container .player-input');
 
         // Extract player names from blue team inputs, trim whitespace, and filter out empty names
         var playerNames = Array.from(playerNamesArray)
         .map(input => input.value.trim())  // Trim whitespace from the input value
         .filter(name => {
-            // Log the name being filtered
             return name !== '';  // Filter out empty names
         })
         .map(name => {
@@ -26,7 +128,6 @@ function start_game() {
         });
 
 
-        // Extract player names from red team inputs, trim whitespace, and filter out empty names
         var equipmentIds = Array.from(equipmentIdsArray)
         .map(input => input.value.trim())  // Trim whitespace from the input value
         .filter(id => {
@@ -38,11 +139,6 @@ function start_game() {
             names_ids_Array.EquipmentID.push(id);
         });
 
-        // Log blue team player names and red team equipment IDs to the console
-       // console.log("Player ID:", names_ids_Array.PlayerName);
-       // console.log("Equipment Ids:", names_ids_Array.EquipmentID);
-
-        //console.log(names_ids_Array);
 
 
         // // Send a POST request to Flask server with player names
@@ -57,55 +153,12 @@ function start_game() {
             })
         })
         .then(response => {
-            // Handle response from the server
             if (response.ok) {
                 console.log('Save successful');
-                return response.json();
+                game();
             } else {
                 console.error('Save failed');
             }
-        })
-        .then(data => {
-            if (data && data.missing_ids && data.missing_ids.length > 0) {
-                // Prompt the user to input missing names
-                missingNameAnswers = [];
-                missingEquipment = data.missing_equipment;
-                for (var obj of data.missing_ids) {
-                    var currentName;
-                    do {
-                        currentName = prompt('Please enter names for the following ID: ' + obj);
-                    } while (!currentName); // Loop until the user provides a non-empty input
-                    missingNameAnswers.push(currentName);
-                }
-                //const missingNames = prompt('Please enter names for the following IDs: ' + data.missing_ids.join(', '));
-                if (missingNameAnswers) {
-                    // Send missing names back to Flask
-                    fetch('/handle_missing_names', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            Player_Names: missingNameAnswers,
-                            Equipment_Ids: missingEquipment,
-                            Player_Ids: data.missing_ids
-                        })
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('Missing names saved successfully');
-                        } else {
-                            console.error('Saving missing names failed');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-                }
-            } else {
-                console.log(data.message); // Log the message
-            }
-            game();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -116,24 +169,8 @@ function start_game() {
 
     function resetInputValues() 
     {
-        var playerInputs = document.querySelectorAll('#player-container .player-input');
-        playerInputs.forEach(function(input) 
-        {
-            input.value = "";
-        });
-        var equipmentInputs = document.querySelectorAll('#equipment-container .player-input');
-        equipmentInputs.forEach(function(input) 
-        {
-            input.value = "";
-        });
+        location.reload();
     }
-    document.addEventListener('keydown', function(event) 
-    {
-        if (event.key === 'F12') 
-        {
-            resetInputValues();
-        }
-    });
 
 
 
