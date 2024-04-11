@@ -98,7 +98,7 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
     const row = tableBody.querySelector(`tr:nth-child(${rowNumber + 1})`);
     if (indicator == "base") {
         row.cells[2].textContent = parseInt(row.cells[2].textContent) + 100;
-        row.cells[1].innerHTML = `<span style="font-family: 'Copperplate'; font-size: xx-large; font-weight: bold; color: gold; border: solid; border-color: gold; padding-left: 8px; margin-right: 5px;">B </span>${row.cells[1].textContent}`;
+        addBaseSymbol(row);
         const newScore = currentScore + 100;
         console.log("New Score: " + newScore);
         totalScoreElement.textContent = `Total Score: ${newScore}`;
@@ -123,6 +123,14 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
 
     flashHigherScoreTeam(redTableId, greenTableId);
     
+}
+
+function addBaseSymbol(row) {
+    // Check if base symbol is already present
+    const baseSymbol = row.cells[1].querySelector('span');
+    if (!baseSymbol) {
+        row.cells[1].innerHTML = `<span style="font-family: 'Copperplate'; font-size: xx-large; font-weight: bold; color: gold; border: solid; border-color: gold; padding-left: 8px; margin-right: 5px;">B </span>${row.cells[1].textContent}`;
+    }
 }
 
 function generate() {
@@ -252,6 +260,7 @@ function addTextToScreen(text) {
     let newText = document.createElement('option');
     newText.text = text;
     updateScreen.add(newText);
+    newText.selected = true;
     scrollToBottom();
 }
 // Makes sure most recent update is visible 

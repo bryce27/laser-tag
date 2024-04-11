@@ -30,7 +30,7 @@
     ```
    This script launches the game interface.
 
-3. **Access the Game**: Open a web browser and navigate to http://127.0.0.1:5000/ to access the game interface.
+3. **Access the Game**: A web browser will automatically launch and navigate to http://127.0.0.1:5000/ to access the game interface.
 
 4. **Enter Player Information**: In the web interface, enter the player IDs for all four players in the designated column. Then, enter the corresponding equipment IDs (1, 2, 3, and 4) that you previously entered when prompted by `udp_server.py`. Finally, click "Start Game" to initiate a count-down timer to initiate the game. Clicking F12 will clear all entries.
 

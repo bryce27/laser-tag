@@ -123,17 +123,19 @@ img {
 }
 
 select {
-    width: 750px;
+    width: 100%;
     margin-top: 5px;
-    background-color: gray;
+    background-color: rgba(255, 255, 255, 0.6);
     border: 5px solid #ddd;
 }
 
 /* Add some space between updates */
 option {
+    text-align: center;
     margin-bottom: 5px; 
     font-family: 'verdana';
     font-size: x-large;
+    font-weight: bold;
 }
 
 h1 {
