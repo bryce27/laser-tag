@@ -88,8 +88,6 @@ function flashHigherScoreTeam(redTeamId, greenTeamId) {
 }
 
 
-
-
 function setScore(table_id, rowNumber, indicator, hitOrShot) {
     const tableBody = document.querySelector(`#${table_id} tbody`);
     const totalScoreElement = document.querySelector(`#${table_id} thead tr:first-child th:nth-child(2)`);
@@ -97,8 +95,8 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
     console.log("Current Score " + table_id + " " + currentScore);
     const row = tableBody.querySelector(`tr:nth-child(${rowNumber + 1})`);
     if (indicator == "base") {
+        row.cells[1].innerHTML = `<span style="font-family: 'Copperplate'; font-size: xx-large; font-weight: bold; color: gold; border: solid; border-color: gold; padding-left: 8px; margin-right: 5px;">B </span>${row.cells[1].textContent}`;
         row.cells[2].textContent = parseInt(row.cells[2].textContent) + 100;
-        addBaseSymbol(row);
         const newScore = currentScore + 100;
         console.log("New Score: " + newScore);
         totalScoreElement.textContent = `Total Score: ${newScore}`;
@@ -125,12 +123,20 @@ function setScore(table_id, rowNumber, indicator, hitOrShot) {
     
 }
 
-function addBaseSymbol(row) {
+function isBaseSymbol(table_id, rowNumber) {
+    const tableBody = document.querySelector(`#${table_id} tbody`);
+    const row = tableBody.querySelector(`tr:nth-child(${rowNumber + 1})`);
     // Check if base symbol is already present
     const baseSymbol = row.cells[1].querySelector('span');
     if (!baseSymbol) {
-        row.cells[1].innerHTML = `<span style="font-family: 'Copperplate'; font-size: xx-large; font-weight: bold; color: gold; border: solid; border-color: gold; padding-left: 8px; margin-right: 5px;">B </span>${row.cells[1].textContent}`;
+        console.log("Base Symbol not present");
+        return false;
     }
+    else {
+        console.log("Base Symbol present");
+        return true;
+    }
+    
 }
 
 function generate() {
@@ -167,8 +173,8 @@ function fetchAndProcessPlayerData() {
             assignTeams(playerData);
             populate_scoreBoard(green_team, greenTableId);
             populate_scoreBoard(red_team, redTableId);
-            console.log("Green " + red_team.PlayerName + " " + red_team.EquipmentID);
-            console.log("Red " + green_team.PlayerName +  " " + green_team.EquipmentID);
+            console.log("Red " + red_team.PlayerName + " " + red_team.EquipmentID);
+            console.log("Green " + green_team.PlayerName +  " " + green_team.EquipmentID);
         })
         .then(() => {
             // Send UDP message "202"
@@ -255,14 +261,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-function addTextToScreen(text) {
+// adds game status and base hits to the game action window
+function addTextToScreen(text, textColor) {
     const updateScreen = document.getElementById('game-action');
     let newText = document.createElement('option');
     newText.text = text;
+
+    // Determine the CSS class based on the value of textColor
+    let textColorClass = '';
+    switch (textColor) {
+     case 1:
+        textColorClass = 'red-text';
+        break;
+     case 2:
+        textColorClass = 'green-text';
+        break;
+     default:
+        textColorClass = 'default-text';
+    }
+
+    newText.classList.add(textColorClass);
     updateScreen.add(newText);
     newText.selected = true;
     scrollToBottom();
 }
+
 // Makes sure most recent update is visible 
 function scrollToBottom() {
     var updateScreen = document.getElementById("game-action");
@@ -301,8 +324,6 @@ function reorderRows(table_id, array) {
 
 
 
-
-
 function send_udp_message(code) {
     fetch('/send_udp_message', {
         method: 'POST',
@@ -326,73 +347,88 @@ function send_udp_message(code) {
             }
             const message = new TextDecoder().decode(value); // Decode the chunk of data to a string
             if (message.includes(":53")) {
+                //determines that a Red base was scored
                 let [eqID, base] = message.split(':');
                 if (eqID % 2 == 0) {
                     eqID = green_team.EquipmentID.indexOf(parseInt(eqID));
                     playerName = green_team.PlayerName[eqID];
                     offset = green_team.Offset[eqID];
-                    setScore(greenTableId, eqID + offset, "base", 'whateves');
-                    reorderRows(greenTableId, green_team);
-                    addTextToScreen("Red Base Scored by " + playerName);
+                    if (!(isBaseSymbol(greenTableId, eqID + offset))) {
+                        console.log("Adding Base Symbol");
+                        setScore(greenTableId, eqID + offset, "base", 'whateves');
+                        reorderRows(greenTableId, green_team);
+                        addTextToScreen("Red Base Scored by " + playerName, 2);
+                    }
                 }
 
             } else if (message.includes(":43")) {
                 let [eqID, base] = message.split(':');
                     if (eqID % 2 != 0) {
+                        //determines that a green base was scored 
                         eqID = red_team.EquipmentID.indexOf(parseInt(eqID));
                         playerName = red_team.PlayerName[eqID];
                         offset = red_team.Offset[eqID];
-                        setScore(redTableId, eqID + offset, "base", 'whateves');
-                        reorderRows(redTableId, red_team);
-                        addTextToScreen("Green Base Scored by " + playerName);
+                        if (!(isBaseSymbol(redTableId, eqID + offset))) {
+                            setScore(redTableId, eqID + offset, "base", 'whateves');
+                            reorderRows(redTableId, red_team);
+                            addTextToScreen("Green Base Scored by " + playerName, 1);
+                        }
                     }
             } else if (!(message.includes(":"))) {
-                    addTextToScreen(message);
+                    addTextToScreen(message, 0); // adds "Start Game/Game is Over" msg to screen.
             } else {
                 text = processHit(message);
                 if (!text.includes(undefined)) {
-                    addTextToScreen(text);
                     let [shooterIndex, hitIndex] = message.split(':');
                     if (shooterIndex % 2 == hitIndex % 2) {
                         if (shooterIndex % 2 == 0) {
                             //get index of shooter
+                            // Green team player hit another green team player 
                             console.log("same Team");
                             shooterIndex = green_team.EquipmentID.indexOf(parseInt(shooterIndex));
                             playerName = green_team.PlayerName[shooterIndex];
                             offset = green_team.Offset[shooterIndex];
                             setScore(greenTableId, shooterIndex + offset, 'normal', "sameTeam");
                             reorderRows(greenTableId, green_team);
+                            addTextToScreen("**FRIENDLY FIRE!** " + text + " **-10 POINTS!**", 0);
                         } else {
+                            // Red team player hit another red team player 
                             shooterIndex = red_team.EquipmentID.indexOf(parseInt(shooterIndex));
                             offset = red_team.Offset[shooterIndex];
                             setScore(redTableId, shooterIndex + offset, 'normal', "sameTeam");
                             reorderRows(redTableId, red_team);
-                            playerName = red_team.PlayerName[shooterIndex];                      
+                            playerName = red_team.PlayerName[shooterIndex];   
+                            addTextToScreen("**FRIENDLY FIRE!** " + text + " **-10 POINTS!**", 0);                   
                         }
                     } else {
                         if (shooterIndex % 2 == 0) {
                             //get index of shooter
+                            // Grabs index of Green team player who hit red team player
                             shooterIndex = green_team.EquipmentID.indexOf(parseInt(shooterIndex));
                             playerName = green_team.PlayerName[shooterIndex];
                             offset = green_team.Offset[shooterIndex];
                             setScore(greenTableId, shooterIndex + offset, 'normal', "shooter");
                             reorderRows(greenTableId, green_team);
+                            addTextToScreen(text, 2);
                         } else {
+                            // Grabs index of red team player who hit green team player
                             shooterIndex = red_team.EquipmentID.indexOf(parseInt(shooterIndex));
                             offset = red_team.Offset[shooterIndex];
                             setScore(redTableId, shooterIndex + offset, 'normal', "shooter");
                             reorderRows(redTableId, red_team);
-                            playerName = red_team.PlayerName[shooterIndex];                       
+                            playerName = red_team.PlayerName[shooterIndex];  
+                            addTextToScreen(text, 1);                     
                         }
     
                         if (hitIndex % 2 == 0) {
-                            //get index of shooter
+                            //get index of green team player who was hit 
                             hitIndex = green_team.EquipmentID.indexOf(parseInt(hitIndex));
                             playerName = green_team.PlayerName[hitIndex];
                             offset = green_team.Offset[hitIndex];
                             setScore(greenTableId, hitIndex + offset, 'normal', "wasHit");
                             reorderRows(greenTableId, green_team);
                         } else {
+                            //get index of red team player who was hit 
                             hitIndex = red_team.EquipmentID.indexOf(parseInt(hitIndex));
                             offset = red_team.Offset[hitIndex];
                             setScore(redTableId, hitIndex + offset, 'normal', "wasHit");
@@ -416,10 +452,7 @@ function send_udp_message(code) {
 }
 
 
-
-
-
-// Function to process the hit and return the result
+// Function to process the hit and return text of which player hit who
 function processHit(message) {
     
     let [shot, hit] = message.split(':');
@@ -448,6 +481,3 @@ function processHit(message) {
     //     return "One or both players not found";
     // }
 }
-
-
-

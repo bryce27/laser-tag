@@ -118,12 +118,10 @@ img {
 }
 
 /* Action window styles */
-.action-container {
-    padding-left: 2%;
-}
-
 select {
-    width: 100%;
+    display: block;
+    margin: 0 auto;
+    width: 75%;
     margin-top: 5px;
     background-color: rgba(255, 255, 255, 0.6);
     border: 5px solid #ddd;
@@ -139,5 +137,26 @@ option {
 }
 
 h1 {
-    margin-bottom: 0px; 
+    margin-bottom: 0px;
+}
+
+.green-text {
+    color: #0b7123;
+}
+
+.red-text {
+    color: #973f3f;
+}
+
+.gbutton {
+    margin: 0 auto;
+    display: block;
+    margin-top: 5px;
+}
+
+div.gawHeaders {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: baseline;
 }

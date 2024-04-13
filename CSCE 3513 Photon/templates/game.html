@@ -24,11 +24,6 @@
     </script>
 </head>
 <body>
-
-    <!-- Create a 5min Timer for the game-->
-    <div style="text-align: center;"> Time left = <span id="mins">0</span>:<span id="secs">30</span></div>
-   
-    
     <div class="stars"></div>
     <div class="table-container">
         <table id="green_team">
@@ -68,14 +63,18 @@
     
 
     <div class="action-container">
-        <h1 id="action-title">Game Action</h1>
+        <div class="gawHeaders">
+            <h1 id="action-title">Game Action</h1>
+             <!-- Create a 6min Timer for the game-->
+            <div style="font-size: x-large;"> Time left = <span id="mins">0</span>:<span id="secs">30</span></div>
+        </div>
         <div id="action-box">
             <select id="game-action" size="10">
             <!-- Updates will be dynamically generated here -->
             </select>
         </div>
     </div>
-    <button onclick="generate()" >generate</button>
+    <button class="gbutton" onclick="generate()" >Generate Game Play</button>
 
 </body>
 </html>
