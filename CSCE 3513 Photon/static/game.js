@@ -369,6 +369,7 @@ function send_udp_message(code) {
                         playerName = red_team.PlayerName[eqID];
                         offset = red_team.Offset[eqID];
                         if (!(isBaseSymbol(redTableId, eqID + offset))) {
+                            console.log("Adding Base Symbol");
                             setScore(redTableId, eqID + offset, "base", 'whateves');
                             reorderRows(redTableId, red_team);
                             addTextToScreen("Green Base Scored by " + playerName, 1);
