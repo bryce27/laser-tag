@@ -23,10 +23,11 @@ def server():
     while True:
         # Receive data from the client
         received_data, client_address = server_socket.recvfrom(buffer_size)
-        print(f"Received message from {client_address}: {received_data.decode()}")
+        print(f"Received message from Client {client_address}: {received_data.decode()}")
         # Send a response back to the client
-
-
+        # message = received_data.decode()
+        # server_socket.sendto(message.encode(), client_address)
+    
         count = 0
         if received_data.decode() == '202':
             message = "Start Game"
