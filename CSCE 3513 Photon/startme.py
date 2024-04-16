@@ -1,10 +1,7 @@
 import os
-import time
 from dotenv import load_dotenv
 load_dotenv()
 from supabase import create_client
-import random
-import string
 import webbrowser
 
 url = "https://xxsgrickhdpcxubeurjk.supabase.co"
@@ -14,19 +11,9 @@ key ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4c
 supabase = create_client(url, key)
 
 
-
-
-def generateID(length=15):
-    """Generate a random ID consisting of letters (uppercase and lowercase) and numbers."""
-    characters = string.ascii_letters + string.digits  # All letters (both cases) and numbers
-    return ''.join(random.choice(characters) for _ in range(length))
-
 def insert_player(playerName, playerID):
     if playerName != None:
         supabase.table("CurrentGameTable").insert({"name": playerName, "equipment_id": int(playerID)}).execute()
-
-
-
 
 
 def clear_table():
@@ -42,10 +29,6 @@ import udp_client as uc
 
 
 app = Flask(__name__)
-
-
-
-
 
 
 
@@ -145,7 +128,11 @@ def send_udp_message_route():
 
 
 if __name__ == '__main__':
+    
     if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
         # Open the browser automatically
+        
         webbrowser.open('http://127.0.0.1:5000')
+
 app.run(debug=True, port=5000)
+
