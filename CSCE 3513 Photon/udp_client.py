@@ -7,12 +7,11 @@ def send_udp_message(message):
     # Create a UDP socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     # Set a timeout for receiving response
-    client_socket.settimeout(5)  # Adjust the timeout as needed
+    client_socket.settimeout(5)  
 
     try:
         # Send data to the server
         client_socket.sendto(message.encode(), server_address)
-
         # Receive response from the server
         data, _ = client_socket.recvfrom(buffer_size)
         response = data.decode()
