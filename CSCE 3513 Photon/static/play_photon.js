@@ -269,70 +269,87 @@ function anyEmptyEquipmentID() {
     return false;
 }
 
+function anyEmptyCodeNames() {
+    const codeNameInputs = document.querySelectorAll(`#codeName-container .player-input`);
+    const playerIDInputs = document.querySelectorAll(`#player-container .player-input`);
+    for (let i = 0; i < playerIDInputs.length; i++) {
+        if (codeNameInputs[i].value === "" && playerIDInputs[i].value !== "") {
+            return true;
+        }
+    }
+    return false;
+}
+
 function start_game() {
 
         // Player inputs
         const playerInput = document.querySelector(`#player-container .player-input[id="${1}"]`);
         
-        
+        //check if all code names are loaded
+        if (playerInput.value != "" && !anyEmptyCodeNames() ){
 
-        if(playerInput.value != "" && !anyEmptyEquipmentID() ) {
-                // Select all player input elements in the playerNames and red team containers
-            var playerNamesArray = document.querySelectorAll('#codeName-container .player-input');
-            var equipmentIdsArray = document.querySelectorAll('#equipment-container .player-input');
+            if(playerInput.value != "" && !anyEmptyEquipmentID() ) {
+                    // Select all player input elements in the playerNames and red team containers
+                var playerNamesArray = document.querySelectorAll('#codeName-container .player-input');
+                var equipmentIdsArray = document.querySelectorAll('#equipment-container .player-input');
 
-            // Extract player names from blue team inputs, trim whitespace, and filter out empty names
-            var playerNames = Array.from(playerNamesArray)
-            .map(input => input.value.trim())  // Trim whitespace from the input value
-            .filter(name => {
-                return name !== '';  // Filter out empty names
-            })
-            .map(name => {
-                // Push the filtered names into the names_ids_Array.PlayerName array
-                names_ids_Array.PlayerName.push(name);
-            });
+                //make button red to signify to user that start button is activated
+                document.getElementById("save-button").style.backgroundColor = "red";
 
-
-            var equipmentIds = Array.from(equipmentIdsArray)
-            .map(input => input.value.trim())  // Trim whitespace from the input value
-            .filter(id => {
-                // Log the name being filtered
-                return id !== '';  // Filter out empty names
-            })
-            .map(id => {
-                // Push the filtered names into the names_ids_Array.PlayerName array
-                names_ids_Array.EquipmentID.push(id);
-            });
-
-
-
-            // // Send a POST request to Flask server with player names
-            fetch('/play_photon/start_game', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    Player_Names: names_ids_Array.PlayerName,
-                    Equipment_Ids: names_ids_Array.EquipmentID
+                // Extract player names from blue team inputs, trim whitespace, and filter out empty names
+                var playerNames = Array.from(playerNamesArray)
+                .map(input => input.value.trim())  // Trim whitespace from the input value
+                .filter(name => {
+                    return name !== '';  // Filter out empty names
                 })
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Save successful');
-                    game();
-                } else {
-                    console.error('Save failed');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        } else {
-            alert("Finish Player Before Starting Game");
-        }
-    
+                .map(name => {
+                    // Push the filtered names into the names_ids_Array.PlayerName array
+                    names_ids_Array.PlayerName.push(name);
+                });
 
+
+                var equipmentIds = Array.from(equipmentIdsArray)
+                .map(input => input.value.trim())  // Trim whitespace from the input value
+                .filter(id => {
+                    // Log the name being filtered
+                    return id !== '';  // Filter out empty names
+                })
+                .map(id => {
+                    // Push the filtered names into the names_ids_Array.PlayerName array
+                    names_ids_Array.EquipmentID.push(id);
+                });
+
+
+
+                // // Send a POST request to Flask server with player names
+                fetch('/play_photon/start_game', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Player_Names: names_ids_Array.PlayerName,
+                        Equipment_Ids: names_ids_Array.EquipmentID
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Save successful');
+                        game();
+                    } else {
+                        console.error('Save failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            } else {
+                alert("Finish Player Before Starting Game");
+            }
+        }
+        else{
+            alert("Wait for all code names to be loaded before continuing!");
+        }
         
         
     } 
