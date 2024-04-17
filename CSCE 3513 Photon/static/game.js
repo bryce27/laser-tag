@@ -40,8 +40,39 @@ async function timer() {
 const redTableId = "red_team";
 const greenTableId = "green_team";
 
-function getRandomImageUrl() {
-    return imageURLs[Math.floor(Math.random() * imageURLs.length)];
+let lastIndex = -1;
+let usedIndexes = [];
+
+function getRandomImageUrlGreen() {
+    const randomIndex = Math.floor(Math.random() * 4); // Generates a random number between 0 and 3 (inclusive)
+    
+    if (usedIndexes.includes(randomIndex)) {
+        // If the randomIndex is already used, recursively call getRandomImageUrlGreen
+        return getRandomImageUrlGreen();
+    } 
+    else {
+        // If the randomIndex is not used, add it to usedIndexes and return the corresponding image URL
+        usedIndexes.push(randomIndex);
+        console.log(randomIndex);
+        console.log(imageURLs[randomIndex]);
+        return imageURLs[randomIndex];
+    }
+}
+
+function getRandomImageUrlRed() {
+    const randomIndex = Math.floor(Math.random() * 4) + 4; // Generates a random number between 4 and 7 (inclusive)
+    
+    if (usedIndexes.includes(randomIndex)) {
+        // If the randomIndex is already used, recursively call getRandomImageUrlRed
+        return getRandomImageUrlRed();
+    } 
+    else {
+        // If the randomIndex is not used, add it to usedIndexes and return the corresponding image URL
+        usedIndexes.push(randomIndex);
+        console.log(randomIndex);
+        console.log(imageURLs[randomIndex]);
+        return imageURLs[randomIndex];
+    }
 }
 
 function assignTeams(array) {
@@ -214,7 +245,16 @@ function populate_scoreBoard(array, table_id) {
             // Create new table data cells for player, name, and score
             const playerCell = document.createElement('td');
             const playerImage = document.createElement('img');
-            playerImage.src = getRandomImageUrl();
+            // Determine the team and set the image source accordingly
+            if (array === green_team) 
+            {
+                playerImage.src = getRandomImageUrlGreen();
+            } 
+            else if (array === red_team) 
+            {
+                playerImage.src = getRandomImageUrlRed();
+            }
+            console.log(playerImage.src);
             playerImage.alt = 'Player Image'; // Set the alt attribute
             playerCell.appendChild(playerImage); // Append the image to the cell
 
