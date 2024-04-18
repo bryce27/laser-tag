@@ -245,11 +245,15 @@ def send_udp_message_route():
     response_generator = uc.send_udp_message(message) 
 
      # Get the generator object
+    if(response_generator != "Response not Important"):
+        print(response_generator)
+        print("RESPONSE    " + str(response_generator))
+        return Response(response_generator, mimetype='text/event-stream')
+    else:
+        print("Not Important")
+        return ""
 
-    print("RESPONSE    " + str(response_generator))
-
-    return Response(response_generator, mimetype='text/event-stream')
-
+    
 
 
 import threading
