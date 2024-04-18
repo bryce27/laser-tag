@@ -19,6 +19,6 @@ def send_udp_message(message):
         return response
     except Exception as e:
         print("Error sending or receiving UDP message:", e)
-        return None
+        return ""  # Return an empty string or another placeholder value
     finally:
         client_socket.close()
