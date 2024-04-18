@@ -10,8 +10,16 @@ let green_team = {
     Offset: [0,0,0]
 };
 
+
+
+async function playAudio() {
+    var audio = new Audio('../static/Track05Part2.mp4');
+    audio.play();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     timer();
+    playAudio();
 });
 
 async function timer() {
@@ -170,12 +178,36 @@ function isBaseSymbol(table_id, rowNumber) {
     
 }
 
-function generate() {
+function generateMessages() {
+    return new Promise((resolve, reject) => {
+        const allEquipmentIds = red_team.EquipmentID.concat(green_team.EquipmentID);
+        const messages = [];
+
+        const length = allEquipmentIds.length; // Cache the length to avoid repeated calculation
+        const equipmentIdsLength = allEquipmentIds.length;
+
+        for (let i = 0; i <= 10; i++) {
+            let randomIndex1 = Math.floor(Math.random() * equipmentIdsLength);
+            let randomIndex2 = Math.floor(Math.random() * equipmentIdsLength);
+            let message = "";
+            if (i == 1 || i == 3) {
+                message = allEquipmentIds[randomIndex1].toString() + ":53";
+            } else if (i == 4 || i == 6) {
+                message = allEquipmentIds[randomIndex2].toString() + ":43";
+            } else {
+                message = allEquipmentIds[randomIndex1].toString() + ":" + allEquipmentIds[randomIndex2].toString();
+            }
+            messages.push(message);
+        }
+
+        resolve(messages);
+    });
+}
+
+async function generate() {
     let count = 0;
 
-    const messageCombinations = [
-        "1:2", "1:3", "2:3", "2:53", "1:43"
-    ];
+    const messageCombinations = await generateMessages();
 
     function sendWithDelay() {
         if (count < 10) {

@@ -87,10 +87,13 @@ document.addEventListener('DOMContentLoaded', function() {
      
         
     function isValidEntry(value, array) {
-        if (isDuplicate(value, array)) {
+        if (array === equipmentIds && (value === "43" || value === "53")) {
+            alert("Equipment ID cannot be 43 or 53");
+            return false;
+        } else if (isDuplicate(value, array)) {
             alert("Duplicate Player ID"); 
             return false;
-        } else if (value == "") {
+        } else if (value === "") {
            return false;
         } else if (!isNumber(value)) {
             alert("Enter Number");
@@ -99,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         }
     }
+    
 
 
     function unlockNextInput(input) {
