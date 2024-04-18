@@ -35,6 +35,8 @@ def server():
             time.sleep(1)
             print("Lets start the Game")
             gameStart=True
+
+            
             # while count < 25:
             #     if random.randint(1, 2) == 1:
             #         redplayer = redPlayer1
@@ -63,19 +65,35 @@ def server():
                 # time.sleep(1)
 
                 
-        if received_data.decode() == '221' and gameStart:
+        # if received_data.decode() == '221' and gameStart:
+        #      message = "Game is Over"
+        #      server_socket.sendto(message.encode(), client_address)
+        #      print("END GAME")
+        #      break
+        
+        # if ':' in received_data.decode() and gameStart:
+        #      message = received_data.decode()
+        #      server_socket.sendto(message.encode(), client_address)
+             
+        
+        else:
+            if received_data.decode() == '221' and gameStart:
              message = "Game is Over"
              server_socket.sendto(message.encode(), client_address)
              print("END GAME")
-             break
-        
-        if ':' in received_data.decode() and gameStart:
-             message = received_data.decode()
-             server_socket.sendto(message.encode(), client_address)
-             
-        
-  
+             gameStart = False
+             server_socket.close()
+             server()
+            elif ':' in received_data.decode() and gameStart:
+                message = received_data.decode()
+                server_socket.sendto(message.encode(), client_address)
+            else:
+                print("in here")
+                message = "Response not Important"
+                server_socket.sendto(message.encode(), client_address)
+
                 
+                       
 
 
 
