@@ -72,7 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let playerIds = [];
     let equipmentIds = [];
-
+    let red_team_members = 0;
+    let green_team_members = 0;
     
     function isDuplicate(value, array) {
         for (let i = 0; i < array.length; i++) {
@@ -98,7 +99,19 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (!isNumber(value)) {
             alert("Enter Number");
             return false;
-        } else {
+        } }else if ((array === equipmentIds) && ((parseInt(value)%2 === 0)) && (green_team_members >= 15)){ 
+            alert("Green Team is Full");
+            return false;
+        }else if ((array === equipmentIds) && ((parseInt(value)%2 === 1)) && (red_team_members >= 15)){ 
+            alert("Red Team is Full");
+            return false;
+        }else if ((array === equipmentIds) && ((parseInt(value)%2 === 0))){ 
+            green_team_members = green_team_members + 1;
+            return true;
+        }else if ((array === equipmentIds) && ((parseInt(value)%2 === 1))){ 
+            red_team_members = red_team_members + 1;
+            return true;
+        }else {
             return true;
         }
     }
@@ -117,11 +130,41 @@ document.addEventListener('DOMContentLoaded', function() {
             equipmentInput.style.backgroundColor = 'white';
             equipmentInput.focus(); // Move focus to the next input
         } else if (playerInput.value !== "" && equipmentInput.value !== "") {
-            rowComplete(playerInput, equipmentInput, codeNameInput);
+            if (parseInt(input.id) >= 8 && parseInt(input.id) < 30){
+                rowComplete(playerInput, equipmentInput, codeNameInput);
+                setInvisible(playerInput);
+                setVisible(playerInput);
+                
+            }else{
+                rowComplete(playerInput, equipmentInput, codeNameInput);
+            }
         }
  
     }
-    
+
+    function setVisible(input){
+        const newID = parseInt(input.id) + 1;
+        const playerInput = document.querySelector(`#player-container .player-input[id="${newID}"]`);
+        const equipmentInput = document.querySelector(`#equipment-container .player-input[id="${newID}"]`);
+        const codeNameInput = document.querySelector(`#codeName-container .player-input[id="${newID}"]`);
+        playerInput.style.display = 'block';
+        equipmentInput.style.display = 'block';
+        codeNameInput.style.display = 'block';
+        playerInput.style.backgroundColor = 'white';
+        equipmentInput.style.backgroundColor = 'white';
+        codeNameInput.style.backgroundColor = 'white';
+    }
+
+    function setInvisible(input){
+        const newID = parseInt(input.id) - 7;
+        const playerInput = document.querySelector(`#player-container .player-input[id="${newID}"]`);
+        const equipmentInput = document.querySelector(`#equipment-container .player-input[id="${newID}"]`);
+        const codeNameInput = document.querySelector(`#codeName-container .player-input[id="${newID}"]`);
+        playerInput.style.display = 'none';
+        equipmentInput.style.display = 'none';
+        codeNameInput.style.display = 'none';
+    }
+
     function rowComplete(playerInput, equipmentInput, codeNameInput) {
         playerInput.style.backgroundColor = 'yellow';
         equipmentInput.style.backgroundColor = 'yellow';
