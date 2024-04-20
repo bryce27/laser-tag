@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (!isNumber(value)) {
             alert("Enter Number");
             return false;
-        } }else if ((array === equipmentIds) && ((parseInt(value)%2 === 0)) && (green_team_members >= 15)){ 
+        } else if ((array === equipmentIds) && ((parseInt(value)%2 === 0)) && (green_team_members >= 15)){ 
             alert("Green Team is Full");
             return false;
         }else if ((array === equipmentIds) && ((parseInt(value)%2 === 1)) && (red_team_members >= 15)){ 
