@@ -52,7 +52,7 @@ let lastIndex = -1;
 let usedIndexes = [];
 
 function getRandomImageUrlGreen() {
-    const randomIndex = Math.floor(Math.random() * 4); // Generates a random number between 0 and 3 (inclusive)
+    const randomIndex = Math.floor(Math.random() * 15); // Generates a random number between 0 and 14 (inclusive)
     
     if (usedIndexes.includes(randomIndex)) {
         // If the randomIndex is already used, recursively call getRandomImageUrlGreen
@@ -68,7 +68,7 @@ function getRandomImageUrlGreen() {
 }
 
 function getRandomImageUrlRed() {
-    const randomIndex = Math.floor(Math.random() * 4) + 4; // Generates a random number between 4 and 7 (inclusive)
+    const randomIndex = Math.floor(Math.random() * 15) + 15; // Generates a random number between 15 and 29 (inclusive)
     
     if (usedIndexes.includes(randomIndex)) {
         // If the randomIndex is already used, recursively call getRandomImageUrlRed

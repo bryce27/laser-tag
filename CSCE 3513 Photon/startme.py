@@ -8,8 +8,6 @@ from supabase import create_client
 
 import webbrowser
 
-import time
-
 
 
 url = "https://xxsgrickhdpcxubeurjk.supabase.co"
@@ -118,15 +116,11 @@ def getCodeName():
 
         playerID = data.get('Player_ID', '')
 
-        print("IDDDDDDD" + playerID)
-
         data = supabase.table("playerNameTable").select('*').eq('playerID', playerID).execute()
 
         if len(data.data) != 0:
 
             playerName = data.data[0]['name']
-
-            print("NAME " + playerName)
 
             return playerName
 
@@ -307,6 +301,15 @@ if __name__ == '__main__':
     open_browser()
 
     
+
+
+
+
+
+
+
+
+
 
     
 

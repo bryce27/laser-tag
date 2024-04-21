@@ -1,11 +1,16 @@
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
+
     function initializeInputs() {
         // Gray out all inputs except the first player input
         document.querySelectorAll('.player-input').forEach((input, index) => {
             input.autocomplete = "off";
             input.value = "";
             if (index !== 0) {
-                console.log("INPUT " + input.value)
                 input.disabled = true;
                 input.style.backgroundColor = 'gray'; // Gray placeholder color
             } else {
@@ -15,12 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     initializeInputs();
-});
 
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
     function updateCodeName(input, previousID) {
         const codeNameInput = document.querySelector(`#codeName-container .player-input[id="${input.id}"]`);
         const equipmentInput = document.querySelector(`#equipment-container .player-input[id="${input.id}"]`);
@@ -30,13 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(codeName => {
                     if (codeName == "missing") {
                         codeName = prompt('Enter code name for new player ID: ' + playerID);
-                        console.log("CODENAME " + codeName);
                         if(codeName !== "") {
                             codeNameInput.value = codeName;
                             insertPlayerToDataBase(playerID, codeName);
                             equipmentInput.readOnly = false;
                         }  else {
-                            console.log("INPUTTT " + input.value);
                             const index = playerIds.indexOf(input.value);
                             const x = playerIds.splice(index, 1);
                             input.readOnly = false; // Set readOnly directly to false
@@ -72,16 +70,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let playerIds = [];
     let equipmentIds = [];
-    let red_team_members = 0;
-    let green_team_members = 0;
+
+    //red_team
+    let oddEquipmentCount = 0;
+
+    //green_team
+    let evenEquipmentCount = 0;
+
     
     function isDuplicate(value, array) {
+        if(array===playerIds) {
+            console.log("DUPLICATE1: ");
+            console.log(array);
+        }
         for (let i = 0; i < array.length; i++) {
-            const obj = array[i];
-            if (value === obj) {
+            //let obj = array[i];
+            if (value === array[i]) {
                 array[i] = value; // Replace the duplicate value in the array
+                if(array===playerIds) {
+                    console.log("DUPLICATE3: " + array);
+                    console.log(array);
+                }
                 return true;
             } 
+            
+        }
+        if(array===playerIds) {
+            console.log("DUPLICATE2: " + array);
+            console.log(array);
         }
         return false;
     }
@@ -99,29 +115,25 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (!isNumber(value)) {
             alert("Enter Number");
             return false;
-        } else if ((array === equipmentIds) && ((parseInt(value)%2 === 0)) && (green_team_members >= 15)){ 
+        } else if (array === equipmentIds && evenEquipmentCount == 15 && value % 2 == 0) {
             alert("Green Team is Full");
             return false;
-        }else if ((array === equipmentIds) && ((parseInt(value)%2 === 1)) && (red_team_members >= 15)){ 
+        } else if (array === equipmentIds && oddEquipmentCount === 15 && value % 2 != 0) {
             alert("Red Team is Full");
-            return false;
-        }else if ((array === equipmentIds) && ((parseInt(value)%2 === 0))){ 
-            green_team_members = green_team_members + 1;
-            return true;
-        }else if ((array === equipmentIds) && ((parseInt(value)%2 === 1))){ 
-            red_team_members = red_team_members + 1;
-            return true;
-        }else {
+        } else {
             return true;
         }
+
     }
-    
+
+
 
 
     function unlockNextInput(input) {
         const playerInput = document.querySelector(`#player-container .player-input[id="${input.id}"]`);
         const equipmentInput = document.querySelector(`#equipment-container .player-input[id="${input.id}"]`);
         const codeNameInput = document.querySelector(`#codeName-container .player-input[id="${input.id}"]`);
+
     
         if (playerInput.value !== "" && equipmentInput.value == "") {
             codeNameInput.style.backgroundColor = 'white';
@@ -130,41 +142,11 @@ document.addEventListener('DOMContentLoaded', function() {
             equipmentInput.style.backgroundColor = 'white';
             equipmentInput.focus(); // Move focus to the next input
         } else if (playerInput.value !== "" && equipmentInput.value !== "") {
-            if (parseInt(input.id) >= 8 && parseInt(input.id) < 30){
-                rowComplete(playerInput, equipmentInput, codeNameInput);
-                setInvisible(playerInput);
-                setVisible(playerInput);
-                
-            }else{
-                rowComplete(playerInput, equipmentInput, codeNameInput);
-            }
+            rowComplete(playerInput, equipmentInput, codeNameInput);
         }
  
     }
-
-    function setVisible(input){
-        const newID = parseInt(input.id) + 1;
-        const playerInput = document.querySelector(`#player-container .player-input[id="${newID}"]`);
-        const equipmentInput = document.querySelector(`#equipment-container .player-input[id="${newID}"]`);
-        const codeNameInput = document.querySelector(`#codeName-container .player-input[id="${newID}"]`);
-        playerInput.style.display = 'block';
-        equipmentInput.style.display = 'block';
-        codeNameInput.style.display = 'block';
-        playerInput.style.backgroundColor = 'white';
-        equipmentInput.style.backgroundColor = 'white';
-        codeNameInput.style.backgroundColor = 'white';
-    }
-
-    function setInvisible(input){
-        const newID = parseInt(input.id) - 7;
-        const playerInput = document.querySelector(`#player-container .player-input[id="${newID}"]`);
-        const equipmentInput = document.querySelector(`#equipment-container .player-input[id="${newID}"]`);
-        const codeNameInput = document.querySelector(`#codeName-container .player-input[id="${newID}"]`);
-        playerInput.style.display = 'none';
-        equipmentInput.style.display = 'none';
-        codeNameInput.style.display = 'none';
-    }
-
+    
     function rowComplete(playerInput, equipmentInput, codeNameInput) {
         playerInput.style.backgroundColor = 'yellow';
         equipmentInput.style.backgroundColor = 'yellow';
@@ -176,13 +158,82 @@ document.addEventListener('DOMContentLoaded', function() {
     function unlockNextRow(input) {
         const newID = parseInt(input.id) + 1;
         const newPlayerInput = document.querySelector(`#player-container .player-input[id="${newID}"]`);
-        if (newPlayerInput) {
+        if (newPlayerInput  && equipmentIds.length < 7) {
             newPlayerInput.disabled = false;
             newPlayerInput.readOnly = false;
             newPlayerInput.focus(); // Move focus to the next input
             newPlayerInput.style.backgroundColor = 'white';
+        } else if (equipmentIds.length >= 7 && equipmentIds.length != 29){
+            addRow();
         }
     }
+
+    var addButton = document.getElementById("add-player-button");
+    if (addButton) {
+        addButton.addEventListener("click", addRow);
+    } else {
+        console.error("Button with ID 'add-player-button' not found.");
+    }
+    function addRow() {
+        // Find the container elements
+        var playerContainer = document.getElementById("player-container");
+        var codeNameContainer = document.getElementById("codeName-container");
+        var equipmentContainer = document.getElementById("equipment-container");
+    
+        // Clone the input elements of the first row
+        var playerInput = playerContainer.querySelector('.player-input');
+        var codeNameInput = codeNameContainer.querySelector('.player-input');
+        var equipmentInput = equipmentContainer.querySelector('.player-input');
+    
+        var newPlayerInput = playerInput.cloneNode(true);
+        var newCodeNameInput = codeNameInput.cloneNode(true);
+        var newEquipmentInput = equipmentInput.cloneNode(true);
+    
+        // Update placeholder and ID for the new inputs
+        var id = playerContainer.children.length + 1;
+        newPlayerInput.setAttribute('id', id);
+        newPlayerInput.setAttribute('placeholder', 'Enter player ID');
+        newPlayerInput.value = '';
+    
+        newCodeNameInput.setAttribute('placeholder', 'Code Name');
+        newCodeNameInput.setAttribute('id', id);
+        newCodeNameInput.value = '';
+    
+        newEquipmentInput.setAttribute('placeholder', 'Enter Equipment ID');
+        newEquipmentInput.setAttribute('id', id);
+        newEquipmentInput.value = '';
+    
+         // Disable autocomplete and set initial states
+        newPlayerInput.autocomplete = "off";
+        newPlayerInput.disabled = false;
+        newPlayerInput.readOnly = false;
+        newPlayerInput.style.backgroundColor = 'white';
+    
+        newCodeNameInput.autocomplete = "off";
+        newCodeNameInput.disabled = true;
+        newCodeNameInput.style.backgroundColor = 'gray';
+    
+        newEquipmentInput.autocomplete = "off";
+        newEquipmentInput.disabled = true;
+        newEquipmentInput.style.backgroundColor = 'gray';
+    
+        // Append the new inputs to their respective containers
+        playerContainer.appendChild(newPlayerInput);
+        codeNameContainer.appendChild(newCodeNameInput);
+        equipmentContainer.appendChild(newEquipmentInput);
+
+        newPlayerInput.focus();
+    
+        const playerInputs = document.querySelectorAll(`#player-container .player-input[id="${id}"]`);
+        addInputListeners(playerInputs, playerIds, "Player ID");
+        
+        // Equipment inputs
+        const equipmentInputs = document.querySelectorAll(`#equipment-container .player-input[id="${id}"]`);
+        addInputListeners(equipmentInputs, equipmentIds, "Equipment ID");
+    
+    }
+
+
     
     
     
@@ -190,8 +241,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function addInputListeners(inputs, ids, errorMessage) {
         inputs.forEach(input => {
             input.addEventListener('blur', function() {
-                console.log("blur");
-                console.log(input.readOnly);
                 if (input.readOnly) {
                     return; // Ignore event listener if readOnly is true
                 }
@@ -199,10 +248,28 @@ document.addEventListener('DOMContentLoaded', function() {
     
                 if (isValidEntry(input.value, ids)) {
                     //unlock the next input box
+                    if(ids===playerIds) {
+                        console.log("Players1:");
+                        console.log(ids);
+                    }
+
+                    if(ids===equipmentIds) {
+                        if(input.value % 2 == 0) {
+                            evenEquipmentCount++;
+                        } else {
+                            oddEquipmentCount++;
+                        }
+                    }
+                    
                     unlockNextInput(input);
                     ids.push(input.value);
                     handleInputEvent(input, "0");
                     input.readOnly = true;
+
+                    if(ids===playerIds) {
+                        console.log("Players2:");
+                        console.log(ids);
+                    }
                 } else {
                     input.value = "";
                     input.focus();
@@ -216,11 +283,32 @@ document.addEventListener('DOMContentLoaded', function() {
     
                 const newID = prompt(`Enter New ${errorMessage}`);
                 if (isValidEntry(newID, ids)) {
-                    unlockNextInput(input);
                     previousID = input.value;
-                    ids.push(newID);
-                    ids = ids.filter(item => item !== input.value);
+                    console.log("NEW ID: " + newID);
+                    if(ids===playerIds) {
+                        console.log("DblPlayers1 :");
+                        console.log(ids);
+                    }
+                    console.log("ORI ID: " + input.value);
+                    const index = ids.indexOf(input.value);
+                    ids[index] = newID;
+
+                    if(ids===playerIds) {
+                        console.log("DblPlayers2 :");
+                        console.log(ids);
+                    }
+                    
+                    if(ids===equipmentIds) {
+                        if(newID % 2 == 0 && input.value % 2 != 0) {
+                            evenEquipmentCount++;
+                            oddEquipmentCount--;
+                        } else if (newID % 2 != 0 && input.value % 2 == 0) {
+                            oddEquipmentCount++;
+                            evenEquipmentCount--;
+                        }
+                    }
                     input.value = newID;
+
                     handleInputEvent(input, previousID);
                 } else {
                     input.focus();
