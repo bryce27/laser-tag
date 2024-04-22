@@ -529,6 +529,7 @@ function send_udp_message(code) {
 function processHit(message) {
     
     let [shot, hit] = message.split(':');
+    send_udp_message(shot);
     if (shot % 2 == 0) {
         shotIndex = green_team.EquipmentID.indexOf(parseInt(shot));
         shotName = green_team.PlayerName[shotIndex];
