@@ -33,7 +33,7 @@
     ```
    This script launches the game interface.
 
-3. **Access the Game**: A web browser will automatically open and navigate to http://127.0.0.1:5000/ to access the game interface.
+3. **Access the Game**: A web browser will automatically open and navigate to http://127.0.0.1:5000/ to access the game interface. Make sure to allow audio.
 
 4. **Enter Player Information**: In the web interface, input player IDs and equipment IDs. Finally, click "Start Game" to initiate a countdown timer to begin the game. Clicking "Clear Entries" will remove all entries.
 
